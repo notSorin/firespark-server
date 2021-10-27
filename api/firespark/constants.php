@@ -9,6 +9,7 @@
     define("KEY_PASSWORD", "password");
     define("KEY_USERNAME", "username");
     define("KEY_FIRSTLASTNAME", "firstlastname");
+    define("KEY_EMAIL_OR_USERNAME", "email_or_username");
 
     define("ERR_BAD_REQUEST", "Bad request.");
     define("ERR_MISSING_REQUIRED_KEYS", "Missing required keys.");
@@ -19,4 +20,6 @@
     define("ERR_CREATE_USER", "Could not register user. Try again later.");
 
     define("SUCCESS_CREATE_USER", "User has been successfully registered.");
+
+    define("ERR_LOGIN_FAILURE", "Incorrect email or password.");
 ?>
