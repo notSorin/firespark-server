@@ -1,5 +1,7 @@
 <?php
     require_once('constants.php');
+    require_once('../vendor/autoload.php');
+    use \Firebase\JWT\JWT;
 
     function isPostRequest($server)
     {
@@ -38,5 +40,21 @@
         header('Content-Type: application/json');
 
         echo json_encode($response);
+    }
+
+    function decodeToken($token)
+    {
+        $payload = null;
+
+        try
+        {
+            $payload = JWT::decode($token, TOKEN_KEY, array(HS512));
+        }
+        catch(Exception $ex)
+        {
+            $payload = null;
+        }
+
+        return $payload;
     }
 ?>
