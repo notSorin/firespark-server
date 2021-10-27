@@ -26,7 +26,7 @@
             {
                 if($registerUser->createUser($email, $password, $username, $firstlastname))
                 {
-                    $response = createSuccessResponse(ERR_CREATE_USER);
+                    $response = createSuccessResponse(SUCCESS_CREATE_USER);
                 }
                 else
                 {
