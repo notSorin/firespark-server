@@ -1,4 +1,4 @@
 <?php
     define("DB_NAME", "firespark");
-    define("DB_NAMEPRE", "firespark");
+    define("DB_NAMEPRE", "firesparkpre");
 ?>
