@@ -9,7 +9,7 @@
 
             if($this->databaseConnection != null)
             {
-                $sql = "INSERT INTO users (email, password, username, firstlastname) VALUES (?, ?, ?, ?);";
+                $sql = "insert into users (email, password, username, firstlastname) VALUES (?, ?, ?, ?);";
                 $statement = $this->databaseConnection->prepare($sql);
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
@@ -27,9 +27,36 @@
                 array_key_exists(KEY_USERNAME, $keysArray) && array_key_exists(KEY_FIRSTLASTNAME, $keysArray);
         }
 
+        private function isEmailUsed($email)
+        {
+            $isUsed = false;
+
+            if($this->databaseConnection != null)
+            {
+                $sql = "select * from users where email = ?;";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("s", $email);
+                
+                $statement->execute();
+                $rowsFound = $statement->get_result()->num_rows;
+
+                $isUsed = $rowsFound != 0;
+            }
+
+            return $isUsed;
+        }
+
         function isEmailUsable($email)
         {
-            //todo
+            $isUsable = false;
+
+            if(filter_var($email, FILTER_VALIDATE_EMAIL))
+            {
+                $isUsable = !$this->isEmailUsed($email);
+            }
+
+            return $isUsable;
         }
 
         function isPasswordUsable($email)
