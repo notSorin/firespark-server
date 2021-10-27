@@ -5,6 +5,7 @@
     {
         private $PASSWORD_REGEX = "/^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W])\S{8,20}$/";
         private $USERNAME_REGEX = "/^[a-zA-Z0-9]{1,20}$/";
+        private $FIRST_LAST_NAME_REGEX = "/^[a-zA-Z0-9 ]{1,30}$/";
 
         function createUser($email, $password, $username, $firstlastname)
         {
@@ -105,7 +106,7 @@
         //Returns true if a first and last name can be used for registering in the network, false otherwise.
         function isFirstLastNameUsable($firstlastname)
         {
-            //todo
+            return preg_match($this->FIRST_LAST_NAME_REGEX, $firstlastname);
         }
     }
 ?>
