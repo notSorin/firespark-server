@@ -16,6 +16,7 @@
             $password = $_POST[KEY_PASSWORD];
             $username = $_POST[KEY_USERNAME];
             $firstlastname = $_POST[KEY_FIRSTLASTNAME];
+            $firstlastname = trim(preg_replace("/\s+/", " ", $firstlastname));
             $isEmailUsable = $registerUser->isEmailUsable($email);
             $isPasswordUsable = $registerUser->isPasswordUsable($password);
             $isUsernameUsable = $registerUser->isUsernameUsable($username);
