@@ -47,6 +47,7 @@
             return $isUsed;
         }
 
+        //Returns true if an email can be used for registering in the network, false otherwise.
         function isEmailUsable($email)
         {
             $isUsable = false;
@@ -59,17 +60,20 @@
             return $isUsable;
         }
 
-        function isPasswordUsable($email)
+        //Returns true if a password can be used for registering in the network, false otherwise.
+        function isPasswordUsable($password)
         {
             //todo
         }
 
-        function isUsernameUsable($email)
+        //Returns true if a username can be used for registering in the network, false otherwise.
+        function isUsernameUsable($username)
         {
             //todo
         }
 
-        function isFirstLastNameUsable($email)
+        //Returns true if a first and last name can be used for registering in the network, false otherwise.
+        function isFirstLastNameUsable($firstlastname)
         {
             //todo
         }
