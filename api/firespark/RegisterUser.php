@@ -7,6 +7,11 @@
         private $USERNAME_REGEX = "/^[a-zA-Z0-9]{1,20}$/";
         private $FIRST_LAST_NAME_REGEX = "/^[a-zA-Z0-9 ]{1,30}$/";
 
+        function __construct()
+        {
+            parent::__construct();
+        }
+
         function createUser($email, $password, $username, $firstlastname)
         {
             $success = false;
