@@ -18,7 +18,7 @@
 
             if($this->databaseConnection != null)
             {
-                $sql = "insert into users (email, password, username, firstlastname) VALUES (?, ?, ?, ?);";
+                $sql = "insert into users (email, password, username, firstlastname) values (?, ?, ?, ?);";
                 $statement = $this->databaseConnection->prepare($sql);
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
