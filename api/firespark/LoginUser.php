@@ -1,5 +1,6 @@
 <?php
     require_once('DatabaseOperation.php');
+    require_once('constants.php');
 
     class LoginUser extends DatabaseOperation
     {
@@ -72,12 +73,12 @@
             if($result->num_rows == 1)
             {
                 $row = $result->fetch_assoc();
-                $hash = $row['password'];
+                $hash = $row[KEY_PASSWORD];
 
                 if(password_verify($password, $hash))
                 {
                     $userData = array(
-                        "userid" => $row['userid']
+                        KEY_USER_ID => $row[KEY_USER_ID]
                     );
                 }
             }
