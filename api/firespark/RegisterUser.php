@@ -3,6 +3,8 @@
 
     class RegisterUser extends DatabaseOperation
     {
+        private $PASSWORD_REGEX = "/^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W])\S{8,20}$/";
+
         function createUser($email, $password, $username, $firstlastname)
         {
             $success = false;
@@ -63,7 +65,7 @@
         //Returns true if a password can be used for registering in the network, false otherwise.
         function isPasswordUsable($password)
         {
-            //todo
+            return preg_match($this->PASSWORD_REGEX, $password);
         }
 
         //Returns true if a username can be used for registering in the network, false otherwise.
