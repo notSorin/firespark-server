@@ -30,10 +30,10 @@
                     "nbf" => $nbf,
                     "exp" => $exp,
                     "aud" => TOKEN_AUDIENCE,
-                    "userdata" => $userData
+                    KEY_TOKEN_USER_DATA => $userData
                 );
 
-                $token = JWT::encode($tokenPayload, TOKEN_KEY, 'HS512');
+                $token = JWT::encode($tokenPayload, TOKEN_KEY, HS512);
 
                 $response = createSuccessResponse($token);
             }
