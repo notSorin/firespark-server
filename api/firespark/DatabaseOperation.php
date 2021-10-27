@@ -1,9 +1,9 @@
 <?php
     require_once('DatabaseConnector.php');
 
-    class DatabaseOperations
+    class DatabaseOperation
     {
-        private $databaseConnection;
+        protected $databaseConnection;
 
         function __construct()
         {
