@@ -4,6 +4,7 @@
     class RegisterUser extends DatabaseOperation
     {
         private $PASSWORD_REGEX = "/^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W])\S{8,20}$/";
+        private $USERNAME_REGEX = "/^[a-zA-Z0-9]{1,20}$/";
 
         function createUser($email, $password, $username, $firstlastname)
         {
@@ -68,10 +69,37 @@
             return preg_match($this->PASSWORD_REGEX, $password);
         }
 
+        private function isUsernameUsed($username)
+        {
+            $isUsed = false;
+
+            if($this->databaseConnection != null)
+            {
+                $sql = "select * from users where username = ?;";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("s", $username);
+                
+                $statement->execute();
+                $rowsFound = $statement->get_result()->num_rows;
+
+                $isUsed = $rowsFound != 0;
+            }
+
+            return $isUsed;
+        }
+
         //Returns true if a username can be used for registering in the network, false otherwise.
         function isUsernameUsable($username)
         {
-            //todo
+            $isUsable = false;
+
+            if(preg_match($this->USERNAME_REGEX, $username))
+            {
+                $isUsable = !$this->isUsernameUsed($username);
+            }
+
+            return $isUsable;
         }
 
         //Returns true if a first and last name can be used for registering in the network, false otherwise.
