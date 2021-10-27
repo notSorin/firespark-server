@@ -14,7 +14,7 @@
     define("ERR_MISSING_REQUIRED_KEYS", "Missing required keys.");
     define("ERR_CANNOT_USE_EMAIL", "Invalid email, or it is already in use.");
     define("ERR_CANNOT_USE_PASSWORD", "Try a different password.");
-    define("ERR_CANNOT_USE_USERNAME", "Username is taken.");
+    define("ERR_CANNOT_USE_USERNAME", "Invalid username, or it is already taken.");
     define("ERR_CANNOT_USE_FIRSTLASTNAME", "Try a different first and last name.");
     define("ERR_CREATE_USER", "Could not register user. Try again later.");
 
