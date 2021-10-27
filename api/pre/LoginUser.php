@@ -1,6 +1,8 @@
 <?php
     require_once('../firespark/constants.php');
     require_once('../firespark/Utils.php');
+    require_once('../vendor/autoload.php');
+    use \Firebase\JWT\JWT;
 
     $response = array();
 
@@ -18,7 +20,22 @@
 
             if($userData != null)
             {
-                $response = createSuccessResponse($userData);
+                $iat = time();
+                $nbf = $iat;
+                $exp = $iat + THIRTY_DAYS;
+
+                $tokenPayload = array(
+                    "iss" => TOKEN_ISSUER,
+                    "iat" => $iat,
+                    "nbf" => $nbf,
+                    "exp" => $exp,
+                    "aud" => TOKEN_AUDIENCE,
+                    "userdata" => $userData
+                );
+
+                $token = JWT::encode($tokenPayload, TOKEN_KEY, 'HS512');
+
+                $response = createSuccessResponse($token);
             }
             else
             {

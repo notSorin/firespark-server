@@ -1,4 +1,9 @@
 <?php
+    define("TOKEN_ISSUER", "Firespark");
+    define("TOKEN_AUDIENCE", "Firespark users");
+    define("TOKEN_KEY", "Make*Sure-This)Is}A%VERY+Strong#Password!OR.bad.things/will:happen");
+    define("THIRTY_DAYS", 2592000);
+
     define("DB_NAME", "firespark");
     define("DB_NAMEPRE", "firesparkpre");
     define("DB_HOST", "localhost");
