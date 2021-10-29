@@ -18,9 +18,8 @@
             $statement = $this->databaseConnection->prepare($sql);
 
             $statement->bind_param("is", $userId, $sparkBody);
-            $success = $statement->execute();
 
-            if($success)
+            if($statement->execute())
             {
                 $sparkId = $this->databaseConnection->insert_id;
                 
@@ -52,15 +51,16 @@
 
             $statement->bind_param("i", $sparkId);
             
-            $statement->execute();
-
-            $result = $statement->get_result();
-
-            if($result->num_rows == 1)
+            if($statement->execute())
             {
-                $spark = $result->fetch_object("Spark");
-                $spark->likes = $this->getSparkLikes($sparkId);
-                $spark->comments = $this->getSparkComments($sparkId);
+                $result = $statement->get_result();
+
+                if($result->num_rows == 1)
+                {
+                    $spark = $result->fetch_object("Spark");
+                    $spark->likes = $this->getSparkLikes($sparkId);
+                    $spark->comments = $this->getSparkComments($sparkId);
+                }
             }
 
             return $spark;
@@ -80,13 +80,14 @@
 
                 $statement->bind_param("i", $sparkId);
                 
-                $statement->execute();
-
-                $result = $statement->get_result();
-
-                while($row = mysqli_fetch_assoc($result))
+                if($statement->execute())
                 {
-                    $comments[] = $row["userid"];
+                    $result = $statement->get_result();
+
+                    while($row = mysqli_fetch_assoc($result))
+                    {
+                        $comments[] = $row["userid"];
+                    }
                 }
             }
 
@@ -107,17 +108,40 @@
 
                 $statement->bind_param("i", $sparkId);
                 
-                $statement->execute();
-
-                $result = $statement->get_result();
-
-                while($row = mysqli_fetch_assoc($result))
+                if($statement->execute())
                 {
-                    $likes[] = $row["userid"];
+                    $result = $statement->get_result();
+
+                    while($row = mysqli_fetch_assoc($result))
+                    {
+                        $likes[] = $row["userid"];
+                    }
                 }
             }
 
             return $likes;
+        }
+
+        function deleteSparkById($sparkId)
+        {
+            $success = false;
+
+            if($this->databaseConnection != null)
+            {
+                $sql = "update sparks
+                        set deleted = TRUE
+                        where sparkid = ?;";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("i", $sparkId);
+                
+                if($statement->execute())
+                {
+                    $success = $statement->affected_rows == 1;
+                }
+            }
+
+            return $success;
         }
     }
 ?>
