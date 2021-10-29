@@ -173,6 +173,7 @@
 
             if($this->databaseConnection != null)
             {
+                //Consider success if the spark is already liked by the user.
                 $success = $this->isSparkLikedByUser($sparkId, $userId);
 
                 if(!$success)
@@ -199,6 +200,7 @@
 
             if($this->databaseConnection != null)
             {
+                //Consider success if the spark is already unliked by the user.
                 $success = !$this->isSparkLikedByUser($sparkId, $userId);
 
                 if(!$success)
