@@ -6,12 +6,12 @@
 
     if(isPostRequest($_SERVER))
     {
-        require_once('firespark/SparksDAO.php');
+        require_once('firespark/SendSpark.php');
 
-        $sparksDAO = new SparksDAO();
+        $sendSpark = new SendSpark();
         $headers = getallheaders();
 
-        if($sparksDAO->containsRequiredKeysAndHeaders($_POST, $headers))
+        if($sendSpark->containsRequiredKeysAndHeaders($_POST, $headers))
         {
             $token = $headers[KEY_TOKEN_AUTH];
             $tokenPayload = decodeToken($token);
@@ -23,11 +23,11 @@
                 //TODO: Before continuing here, check if the user is allowed to send a spark, because 
                 //they might have reached their limit of sparks per hour.
 
-                $sparkBody = $sparksDAO->preProcessSparkBody($_POST[KEY_SPARK_BODY]);
+                $sparkBody = $sendSpark->preProcessSparkBody($_POST[KEY_SPARK_BODY]);
 
                 if($sparkBody != null)
                 {
-                    $spark = $sparksDAO->sendSpark($userid, $sparkBody);
+                    $spark = $sendSpark->sendSpark($userid, $sparkBody);
 
                     if($spark != null)
                     {
