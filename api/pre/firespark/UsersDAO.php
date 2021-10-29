@@ -16,7 +16,9 @@
            
             if($this->databaseConnection != null)
             {
-                $sql = "select * from users where email = ?;";
+                $sql = "select *
+                        from users
+                        where email = ?;";
                 $statement = $this->databaseConnection->prepare($sql);
 
                 $statement->bind_param("s", $email);
@@ -50,7 +52,9 @@
            
             if($this->databaseConnection != null)
             {
-                $sql = "select userid from followers where followeeid = ?;";
+                $sql = "select userid
+                        from followers
+                        where followeeid = ?;";
                 $statement = $this->databaseConnection->prepare($sql);
 
                 $statement->bind_param("i", $userId);
@@ -74,7 +78,9 @@
            
             if($this->databaseConnection != null)
             {
-                $sql = "select followeeid from followers where userid = ?;";
+                $sql = "select followeeid
+                        from followers
+                        where userid = ?;";
                 $statement = $this->databaseConnection->prepare($sql);
 
                 $statement->bind_param("i", $userId);
@@ -98,7 +104,9 @@
            
             if($this->databaseConnection != null)
             {
-                $sql = "select * from users where username = ?;";
+                $sql = "select *
+                        from users
+                        where username = ?;";
                 $statement = $this->databaseConnection->prepare($sql);
 
                 $statement->bind_param("s", $username);
@@ -167,7 +175,8 @@
 
             if($this->databaseConnection != null)
             {
-                $sql = "insert into users (email, password, username, firstlastname) values (?, ?, ?, ?);";
+                $sql = "insert into users (email, password, username, firstlastname)
+                        values (?, ?, ?, ?);";
                 $statement = $this->databaseConnection->prepare($sql);
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
@@ -185,7 +194,9 @@
 
             if($this->databaseConnection != null)
             {
-                $sql = "select * from users where email = ?;";
+                $sql = "select *
+                        from users
+                        where email = ?;";
                 $statement = $this->databaseConnection->prepare($sql);
 
                 $statement->bind_param("s", $email);
@@ -205,7 +216,9 @@
 
             if($this->databaseConnection != null)
             {
-                $sql = "select * from users where username = ?;";
+                $sql = "select *
+                        from users
+                        where username = ?;";
                 $statement = $this->databaseConnection->prepare($sql);
 
                 $statement->bind_param("s", $username);
