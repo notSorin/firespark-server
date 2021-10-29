@@ -29,8 +29,10 @@
     define("ERR_INVALID_CREDENTIALS", "Invalid credentials detected.");
     define("ERRNO_INVALID_CREDENTIALS", "ERRNO_IC");
     define("ERR_SEND_SPARK", "Could not send spark. Try again.");
+    define("ERR_DELETE_SPARK", "The Spark could not be deleted.");
 
     define("SUCCESS_CREATE_USER", "User has been successfully registered.");
+    define("SUCCESS_DELETE_SPARK", "The Spark has been deleted.");
 
     define("ERR_LOGIN_FAILURE", "Incorrect email or password.");
 
