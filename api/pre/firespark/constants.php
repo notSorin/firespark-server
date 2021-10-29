@@ -18,6 +18,9 @@
     define("KEY_EMAIL_OR_USERNAME", "email_or_username");
     define("KEY_USER_ID", "userid");
     define("KEY_ERRNO", "errno");
+    define("KEY_ACTION", "action");
+    define("KEY_ACTION_LIKE", "like");
+    define("KEY_ACTION_UNLIKE", "unlike");
 
     define("ERR_BAD_REQUEST", "Bad request.");
     define("ERR_MISSING_REQUIRED_KEYS", "Missing required keys.");
@@ -30,9 +33,14 @@
     define("ERRNO_INVALID_CREDENTIALS", "ERRNO_IC");
     define("ERR_SEND_SPARK", "Could not send spark. Try again.");
     define("ERR_DELETE_SPARK", "The Spark could not be deleted.");
+    define("ERR_LIKE_SPARK", "The Spark could not be liked.");
+    define("ERR_UNLIKE_SPARK", "The Spark could not be unliked.");
+    define("ERR_LIKEUNLIKE_SPARK", "Could not perform this action.");
 
     define("SUCCESS_CREATE_USER", "User has been successfully registered.");
     define("SUCCESS_DELETE_SPARK", "The Spark has been deleted.");
+    define("SUCCESS_LIKE_SPARK", "The Spark has been liked.");
+    define("SUCCESS_UNLIKE_SPARK", "The Spark has been unliked.");
 
     define("ERR_LOGIN_FAILURE", "Incorrect email or password.");
 
