@@ -1,6 +1,6 @@
 <?php
-    require_once('../firespark/constants.php');
-    require_once('../firespark/Utils.php');
+    require_once('firespark/constants.php');
+    require_once('firespark/Utils.php');
     require_once('../vendor/autoload.php');
     use \Firebase\JWT\JWT;
 
@@ -8,7 +8,7 @@
 
     if(isPostRequest($_SERVER))
     {
-        require_once('../firespark/LoginUser.php');
+        require_once('firespark/LoginUser.php');
 
         $loginUser = new LoginUser();
 

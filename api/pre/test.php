@@ -1,6 +1,6 @@
 <?php
 	ini_set('display_errors', '1');
-	require_once('../firespark/constants.php');
+	require_once('firespark/constants.php');
 	header('Content-Type: application/json');
 
 	$return = array(

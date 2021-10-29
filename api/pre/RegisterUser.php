@@ -1,12 +1,12 @@
 <?php
-    require_once('../firespark/constants.php');
-    require_once('../firespark/Utils.php');
+    require_once('firespark/constants.php');
+    require_once('firespark/Utils.php');
 
     $response = array();
 
     if(isPostRequest($_SERVER))
     {
-        require_once('../firespark/RegisterUser.php');
+        require_once('firespark/RegisterUser.php');
 
         $registerUser = new RegisterUser();
 
