@@ -14,7 +14,7 @@
         {
             $spark = null;
             $sql = "insert into sparks (userid, body)
-                    values (? , ?);";
+                    values (?, ?);";
             $statement = $this->databaseConnection->prepare($sql);
 
             $statement->bind_param("is", $userId, $sparkBody);
@@ -138,6 +138,81 @@
                 if($statement->execute())
                 {
                     $success = $statement->affected_rows == 1;
+                }
+            }
+
+            return $success;
+        }
+
+        function isSparkLikedByUser($sparkId, $userId)
+        {
+            $isLiked = false;
+
+            if($this->databaseConnection != null)
+            {
+                $sql = "select *
+                        from sparkslikes
+                        where sparkid = ? and userid = ?;";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("ii", $sparkId, $userId);
+                
+                if($statement->execute())
+                {
+                    $result = $statement->get_result();
+                    $isLiked = $result->num_rows == 1;
+                }
+            }
+
+            return $isLiked;
+        }
+
+        function likeSpark($sparkId, $userId)
+        {
+            $success = false;
+
+            if($this->databaseConnection != null)
+            {
+                $success = $this->isSparkLikedByUser($sparkId, $userId);
+
+                if(!$success)
+                {
+                    $sql = "insert into sparkslikes (sparkid, userid)
+                            values (?, ?);";
+                    $statement = $this->databaseConnection->prepare($sql);
+
+                    $statement->bind_param("ii", $sparkId, $userId);
+
+                    if($statement->execute())
+                    {
+                        $success = $statement->affected_rows == 1;
+                    }
+                }
+            }
+
+            return $success;
+        }
+
+        function unlikeSpark($sparkId, $userId)
+        {
+            $success = false;
+
+            if($this->databaseConnection != null)
+            {
+                $success = !$this->isSparkLikedByUser($sparkId, $userId);
+
+                if(!$success)
+                {
+                    $sql = "delete from sparkslikes
+                            where sparkid = ? and userid = ?;";
+                    $statement = $this->databaseConnection->prepare($sql);
+
+                    $statement->bind_param("ii", $sparkId, $userId);
+
+                    if($statement->execute())
+                    {
+                        $success = $statement->affected_rows == 1;
+                    }
                 }
             }
 
