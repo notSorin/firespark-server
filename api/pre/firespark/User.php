@@ -8,7 +8,8 @@
 
         function __construct()
         {
-
+            $this->followers = null;
+            $this->following = null;
         }
 
         function toArray()
