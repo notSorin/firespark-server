@@ -10,7 +10,7 @@
             parent::__construct();
         }
 
-        function getUserByEmailAndPassword($email, $password)
+        function getUserByEmail($email)
         {
             $user = null;
            
@@ -27,12 +27,48 @@
 
                 if($result->num_rows == 1)
                 {
-                    $tmpUser = $result->fetch_object("User");
+                    $user = $result->fetch_object("User");
+                }
+            }
 
-                    if(password_verify($password, $tmpUser->password))
-                    {
-                        $user = $tmpUser;
-                    }
+            return $user;
+        }
+
+        function getUserByUsername($username)
+        {
+            $user = null;
+           
+            if($this->databaseConnection != null)
+            {
+                $sql = "select * from users where username = ?;";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("s", $username);
+                
+                $statement->execute();
+
+                $result = $statement->get_result();
+
+                if($result->num_rows == 1)
+                {
+                    $user = $result->fetch_object("User");
+                }
+            }
+
+            return $user;
+        }
+
+        function getUserByEmailAndPassword($email, $password)
+        {
+            $user = null;
+           
+            if($this->databaseConnection != null)
+            {
+                $tmpUser = $this->getUserByEmail($email);
+
+                if(password_verify($password, $tmpUser->password))
+                {
+                    $user = $tmpUser;
                 }
             }
 
@@ -46,23 +82,11 @@
 
             if($this->databaseConnection != null)
             {
-                $sql = "select * from users where lower(username) = lower(?);";
-                $statement = $this->databaseConnection->prepare($sql);
+                $tmpUser = $this->getUserByUsername($username);
 
-                $statement->bind_param("s", $username);
-                
-                $statement->execute();
-
-                $result = $statement->get_result();
-
-                if($result->num_rows == 1)
+                if(password_verify($password, $tmpUser->password))
                 {
-                    $tmpUser = $result->fetch_object("User");
-
-                    if(password_verify($password, $tmpUser->password))
-                    {
-                        $user = $tmpUser;
-                    }
+                    $user = $tmpUser;
                 }
             }
 
