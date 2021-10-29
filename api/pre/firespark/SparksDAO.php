@@ -1,6 +1,7 @@
 <?php
     require_once('DatabaseOperation.php');
     require_once('constants.php');
+    require_once('Spark.php');
 
     class SparksDAO extends DatabaseOperation
     {
@@ -9,10 +10,11 @@
             parent::__construct();
         }
 
-        function sendSpark($userId, $sparkBody)
+        function insertSpark($userId, $sparkBody)
         {
             $spark = null;
-            $sql = "insert into sparks (userid, body) values (? , ?);";
+            $sql = "insert into sparks (userid, body)
+                    values (? , ?);";
             $statement = $this->databaseConnection->prepare($sql);
 
             $statement->bind_param("is", $userId, $sparkBody);
@@ -28,10 +30,24 @@
             return $spark;
         }
 
-        private function getSparkById($sparkId, $requesterId)
+        function getSparkById($sparkId, $includeDeleted = false)
         {
             $spark = null;
-            $sql = "select * from sparks join users on sparks.userid = users.userid where sparkid = ? and deleted = 0;";
+            $sql = null;
+
+            if($includeDeleted)
+            {
+                $sql = "select sparkid, userid, body, created, deleted, username, firstlastname
+                        from sparks natural join users
+                        where sparkid = ?;";
+            }
+            else
+            {
+                $sql = "select sparkid, userid, body, created, deleted, username, firstlastname
+                        from sparks natural join users
+                        where sparkid = ? and deleted = 0;";
+            }
+
             $statement = $this->databaseConnection->prepare($sql);
 
             $statement->bind_param("i", $sparkId);
@@ -42,43 +58,66 @@
 
             if($result->num_rows == 1)
             {
-                $row = $result->fetch_assoc();
-
-                //TODO: Create a Spark class and set its likes and comments amount, and if it is liked and has a comment from the requester user.
-                $spark = array(
-                    KEY_SPARK_ID => $row[KEY_SPARK_ID],
-                    KEY_SPARK_BODY => $row[KEY_SPARK_BODY],
-                    KEY_SPARK_CREATED => $row[KEY_SPARK_CREATED],
-                    KEY_USERNAME => $row[KEY_USERNAME],
-                    KEY_FIRSTLASTNAME => $row[KEY_FIRSTLASTNAME]
-                );
+                $spark = $result->fetch_object("Spark");
+                $spark->likes = $this->getSparkLikes($sparkId);
+                $spark->comments = $this->getSparkComments($sparkId);
             }
 
             return $spark;
         }
 
-        function preProcessSparkBody($sparkBody)
+        //Returns an array with the ids of all the users who have commented on a certain spark.
+        function getSparkComments($sparkId)
         {
-            $newBody = null;
-            $sparkBody = trim($sparkBody);
-
-            if(!empty($sparkBody))
+            $comments = [];
+           
+            if($this->databaseConnection != null)
             {
-                $sparkBody = preg_replace("/\s+/", " ", $sparkBody);
-                $sparkLength = strlen($sparkBody);
+                $sql = "select userid
+                        from comments
+                        where sparkid = ?;";
+                $statement = $this->databaseConnection->prepare($sql);
 
-                if($sparkLength > 0 && $sparkLength <= MAX_SPARK_BODY_LENGTH)
+                $statement->bind_param("i", $sparkId);
+                
+                $statement->execute();
+
+                $result = $statement->get_result();
+
+                while($row = mysqli_fetch_assoc($result))
                 {
-                    $newBody = $sparkBody;
+                    $comments[] = $row["userid"];
                 }
             }
 
-            return $newBody;
+            return $comments;
         }
 
-        function containsRequiredKeysAndHeaders($keysArray, $headers)
+        //Returns an array with the ids of all the users who have liked a certain spark.
+        function getSparkLikes($sparkId)
         {
-            return array_key_exists(KEY_SPARK_BODY, $keysArray) && array_key_exists(KEY_TOKEN_AUTH, $headers);
+            $likes = [];
+           
+            if($this->databaseConnection != null)
+            {
+                $sql = "select userid
+                        from sparkslikes
+                        where sparkid = ?;";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("i", $sparkId);
+                
+                $statement->execute();
+
+                $result = $statement->get_result();
+
+                while($row = mysqli_fetch_assoc($result))
+                {
+                    $likes[] = $row["userid"];
+                }
+            }
+
+            return $likes;
         }
     }
 ?>
