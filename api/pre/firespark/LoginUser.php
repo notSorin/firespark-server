@@ -1,89 +1,40 @@
 <?php
-    require_once('DatabaseOperation.php');
+    require_once('UsersDAO.php');
     require_once('constants.php');
 
-    class LoginUser extends DatabaseOperation
+    class LoginUser
     {
+        private $usersDAO;
+        
         function __construct()
         {
-            parent::__construct();
+            $this->usersDAO = new UsersDAO();
         }
         
         //Returns an array with the user's data on success, null otherwise.
         function loginUser($emailOrUsername, $password)
         {
-            $userData = null;
+            $user = null;
 
             if(filter_var($emailOrUsername, FILTER_VALIDATE_EMAIL)) //It's an email.
             {
-                $userData = $this->loginWithEmailAndPassword($emailOrUsername, $password);
+                $user = $this->usersDAO->getUserByEmailAndPassword($emailOrUsername, $password);
             }
             else //Should be an username.
             {
-                $userData = $this->loginWithUsernameAndPassword($emailOrUsername, $password);
+                $user = $this->usersDAO->getUserByUsernameAndPassword($emailOrUsername, $password);
             }
 
-            return $userData;
-        }
+            $ret = null;
 
-        private function loginWithEmailAndPassword($email, $password)
-        {
-            $userData = null;
-           
-            if($this->databaseConnection != null)
+            if($user != null)
             {
-                $sql = "select userid, password from users where email = ?;";
-                $statement = $this->databaseConnection->prepare($sql);
-
-                $statement->bind_param("s", $email);
-                
-                $statement->execute();
-
-                $result = $statement->get_result();
-                $userData = $this->processLoginResult($result, $password);
+                $ret = array(
+                    KEY_USER_ID => $user->userid
+                );
             }
 
-            return $userData;
-        }
-
-        private function loginWithUsernameAndPassword($username, $password)
-        {
-            $userData = null;
-
-            if($this->databaseConnection != null)
-            {
-                $sql = "select userid, password from users where lower(username) = lower(?);";
-                $statement = $this->databaseConnection->prepare($sql);
-
-                $statement->bind_param("s", $username);
-                
-                $statement->execute();
-
-                $result = $statement->get_result();
-                $userData = $this->processLoginResult($result, $password);
-            }
-
-            return $userData;
-        }
-
-        private function processLoginResult($result, $password)
-        {
-            $userData = null;
-
-            if($result->num_rows == 1)
-            {
-                $row = $result->fetch_assoc();
-                $hash = $row[KEY_PASSWORD];
-
-                if(password_verify($password, $hash))
-                {
-                    $userData = array(
-                        KEY_USER_ID => $row[KEY_USER_ID]
-                    );
-                }
-            }
-
-            return $userData;
+            return $ret;
         }
 
         function containsRequiredKeys($keysArray)
