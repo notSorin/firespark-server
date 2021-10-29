@@ -24,7 +24,7 @@
 
             if($isEmailUsable && $isPasswordUsable && $isUsernameUsable && $isFirstLastNameUsable)
             {
-                if($registerUser->createUser($email, $password, $username, $firstlastname))
+                if($registerUser->registerUser($email, $password, $username, $firstlastname))
                 {
                     $response = createSuccessResponse(SUCCESS_CREATE_USER);
                 }
