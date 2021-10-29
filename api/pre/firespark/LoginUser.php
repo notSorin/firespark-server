@@ -18,11 +18,11 @@
 
             if(filter_var($emailOrUsername, FILTER_VALIDATE_EMAIL)) //It's an email.
             {
-                $user = $this->usersDAO->getUserByEmailAndPassword($emailOrUsername, $password);
+                $user = $this->usersDAO->getUserByEmailAndPassword($emailOrUsername, $password, false, false);
             }
             else //Should be an username.
             {
-                $user = $this->usersDAO->getUserByUsernameAndPassword($emailOrUsername, $password);
+                $user = $this->usersDAO->getUserByUsernameAndPassword($emailOrUsername, $password, false, false);
             }
 
             $ret = null;
