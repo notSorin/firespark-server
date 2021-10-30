@@ -231,5 +231,89 @@
 
             return $isUsed;
         }
+
+        //Returns true if the user with $followeeid is followed by the user with $userid,
+        //false otherwise.
+        function isUserFollowed($followeeid, $userid)
+        {
+            $isFollowed = false;
+
+            if($followeeid != $userid) //A user cannot follow themselves.
+            {
+                if($this->databaseConnection != null)
+                {
+                    $sql = "select *
+                            from followers
+                            where userid = ? and followeeid = ?;";
+                    $statement = $this->databaseConnection->prepare($sql);
+
+                    $statement->bind_param("ii", $userid, $followeeid);
+                    
+                    if($statement->execute())
+                    {
+                        $result = $statement->get_result();
+                        $isFollowed = $result->num_rows == 1;
+                    }
+                }
+            }
+
+            return $isFollowed;
+        }
+
+        function followUser($followeeid, $userid)
+        {
+            $success = false;
+
+            if($followeeid != $userid) //A user cannot follow themselves.
+            {
+                //Consider success if the followee is already followed by the user.
+                $success = $this->isUserFollowed($followeeid, $userid);
+
+                if(!$success)
+                {
+                    $sql = "insert into followers (userid, followeeid)
+                            values (?, ?);";
+                    $statement = $this->databaseConnection->prepare($sql);
+
+                    $statement->bind_param("ii", $userid, $followeeid);
+
+                    if($statement->execute())
+                    {
+                        $success = $statement->affected_rows == 1;
+                    }
+                }
+            }
+
+            return $success;
+        }
+
+        function unfollowUser($followeeid, $userid)
+        {
+            $success = false;
+
+            //A user cannot unfollow themselves because they should have not been able
+            //to follow themselves in the first place.
+            if($followeeid != $userid)
+            {
+                //Consider success if the followee is not followed by the user.
+                $success = !$this->isUserFollowed($followeeid, $userid);
+
+                if(!$success)
+                {
+                    $sql = "delete from followers
+                            where userid = ? and followeeid = ?;";
+                    $statement = $this->databaseConnection->prepare($sql);
+
+                    $statement->bind_param("ii", $userid, $followeeid);
+
+                    if($statement->execute())
+                    {
+                        $success = $statement->affected_rows == 1;
+                    }
+                }
+            }
+
+            return $success;
+        }
     }
 ?>
