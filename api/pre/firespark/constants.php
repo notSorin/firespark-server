@@ -21,6 +21,9 @@
     define("KEY_ACTION", "action");
     define("KEY_ACTION_LIKE", "like");
     define("KEY_ACTION_UNLIKE", "unlike");
+    define("KEY_FOLLOWEE_ID", "followeeid");
+    define("KEY_ACTION_FOLLOW", "follow");
+    define("KEY_ACTION_UNFOLLOW", "unfollow");
 
     define("ERR_BAD_REQUEST", "Bad request.");
     define("ERR_MISSING_REQUIRED_KEYS", "Missing required keys.");
@@ -35,12 +38,16 @@
     define("ERR_DELETE_SPARK", "The Spark could not be deleted.");
     define("ERR_LIKE_SPARK", "The Spark could not be liked.");
     define("ERR_UNLIKE_SPARK", "The Spark could not be unliked.");
-    define("ERR_LIKEUNLIKE_SPARK", "Could not perform this action.");
+    define("ERR_CANNOT_PERFORM_ACTION", "Could not perform this action.");
+    define("ERR_FOLLOW_USER", "The User could not be followed.");
+    define("ERR_UNFOLLOW_USER", "The User could not be unfollowed.");
 
     define("SUCCESS_CREATE_USER", "User has been successfully registered.");
     define("SUCCESS_DELETE_SPARK", "The Spark has been deleted.");
     define("SUCCESS_LIKE_SPARK", "The Spark has been liked.");
     define("SUCCESS_UNLIKE_SPARK", "The Spark has been unliked.");
+    define("SUCCESS_FOLLOW_USER", "The User has been followed.");
+    define("SUCCESS_UNFOLLOW_USER", "The User has been unfollowed.");
 
     define("ERR_LOGIN_FAILURE", "Incorrect email or password.");
 

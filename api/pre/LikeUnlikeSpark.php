@@ -46,7 +46,7 @@
                 }
                 else
                 {
-                    $response = createBadResponse(ERR_LIKEUNLIKE_SPARK);
+                    $response = createBadResponse(ERR_CANNOT_PERFORM_ACTION);
                 }
             }
             else
