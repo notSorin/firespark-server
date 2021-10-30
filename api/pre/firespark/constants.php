@@ -41,6 +41,7 @@
     define("ERR_CANNOT_PERFORM_ACTION", "Could not perform this action.");
     define("ERR_FOLLOW_USER", "The User could not be followed.");
     define("ERR_UNFOLLOW_USER", "The User could not be unfollowed.");
+    define("ERR_GET_HOME_DATA", "Could not retrieve home data.");
 
     define("SUCCESS_CREATE_USER", "User has been successfully registered.");
     define("SUCCESS_DELETE_SPARK", "The Spark has been deleted.");
