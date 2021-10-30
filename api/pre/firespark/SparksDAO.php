@@ -234,7 +234,6 @@
                         where userid = ?
                     )
                     order by created desc;";
-
             $statement = $this->databaseConnection->prepare($sql);
 
             $statement->bind_param("i", $userId);
