@@ -220,5 +220,39 @@
 
             return $success;
         }
+
+        //Returns an array with sparks from the users whom $userId is following, or null on error.
+        function getSparksFromFollowing($userId)
+        {
+            $sparks = null;
+            $sql = "select sparkid, userid, body, created, deleted, username, firstlastname
+                    from sparks natural join users
+                    where deleted = FALSE and userid in
+                    (
+                        select followeeid
+                        from followers
+                        where userid = ?
+                    )
+                    order by created desc;";
+
+            $statement = $this->databaseConnection->prepare($sql);
+
+            $statement->bind_param("i", $userId);
+            
+            if($statement->execute())
+            {
+                $sparks = [];
+                $result = $statement->get_result();
+
+                while($spark = $result->fetch_object("Spark"))
+                {
+                    $spark->likes = $this->getSparkLikes($spark->sparkid);
+                    $spark->comments = $this->getSparkComments($spark->sparkid);
+                    $sparks[] = $spark;
+                }
+            }
+
+            return $sparks;
+        }
     }
 ?>
