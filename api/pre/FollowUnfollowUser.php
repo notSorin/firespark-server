@@ -24,7 +24,7 @@
 
                 if($action == KEY_ACTION_FOLLOW)
                 {
-                    if($fuUser->followUser($followeeid, $userid) == true)
+                    if($fuUser->followUser($followeeid, $userid) === true)
                     {
                         $response = createSuccessResponse(SUCCESS_FOLLOW_USER);
                     }
@@ -35,7 +35,7 @@
                 }
                 elseif($action == KEY_ACTION_UNFOLLOW)
                 {
-                    if($fuUser->unfollowUser($followeeid, $userid) == true)
+                    if($fuUser->unfollowUser($followeeid, $userid) === true)
                     {
                         $response = createSuccessResponse(SUCCESS_UNFOLLOW_USER);
                     }

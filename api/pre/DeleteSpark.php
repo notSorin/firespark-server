@@ -21,7 +21,7 @@
                 $userid = $tokenPayload->userdata->userid;
                 $sparkid = $_POST[KEY_SPARK_ID];
 
-                if($deleteSpark->deleteSpark($userid, $sparkid) == true)
+                if($deleteSpark->deleteSpark($userid, $sparkid) === true)
                 {
                     $response = createSuccessResponse(SUCCESS_DELETE_SPARK);
                 }

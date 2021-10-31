@@ -24,7 +24,7 @@
 
                 if($action == KEY_ACTION_LIKE)
                 {
-                    if($luSpark->likeSpark($sparkid, $userid) == true)
+                    if($luSpark->likeSpark($sparkid, $userid) === true)
                     {
                         $response = createSuccessResponse(SUCCESS_LIKE_SPARK);
                     }
@@ -35,7 +35,7 @@
                 }
                 elseif($action == KEY_ACTION_UNLIKE)
                 {
-                    if($luSpark->unlikeSpark($sparkid, $userid) == true)
+                    if($luSpark->unlikeSpark($sparkid, $userid) === true)
                     {
                         $response = createSuccessResponse(SUCCESS_UNLIKE_SPARK);
                     }
