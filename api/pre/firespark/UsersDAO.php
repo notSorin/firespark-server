@@ -355,7 +355,7 @@
         //Returns profiles whose usernames or first and last names match the parameter name.
         function getUsersByName($name, $includeFollowers = true, $includeFollowing = true)
         {
-            $profiles = null;
+            $users = null;
             $sql = "select *
                     from users
                     where username like ? or firstlastname like ?;";
@@ -367,7 +367,7 @@
             
             if($statement->execute())
             {
-                $profiles = [];
+                $users = [];
                 $result = $statement->get_result();
                 
                 while($user = $result->fetch_object("User"))
@@ -382,11 +382,11 @@
                         $user->following = $this->getUserFollowing($user->userid);
                     }
 
-                    $profiles[] = $user;
+                    $users[] = $user;
                 }
             }
 
-            return $profiles;
+            return $users;
         }
     }
 ?>
