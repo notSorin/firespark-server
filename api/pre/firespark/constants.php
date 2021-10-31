@@ -24,6 +24,7 @@
     define("KEY_FOLLOWEE_ID", "followeeid");
     define("KEY_ACTION_FOLLOW", "follow");
     define("KEY_ACTION_UNFOLLOW", "unfollow");
+    define("KEY_SEARCH_NAME", "name");
 
     define("ERR_BAD_REQUEST", "Bad request.");
     define("ERR_MISSING_REQUIRED_KEYS", "Missing required keys.");
@@ -43,6 +44,7 @@
     define("ERR_UNFOLLOW_USER", "The User could not be unfollowed.");
     define("ERR_GET_HOME_DATA", "Could not retrieve home data.");
     define("ERR_GET_PROFILE_DATA", "Could not retrieve profile data.");
+    define("ERR_SEARCH_NAMES", "Could not search for profiles.");
 
     define("SUCCESS_CREATE_USER", "User has been successfully registered.");
     define("SUCCESS_DELETE_SPARK", "The Spark has been deleted.");
