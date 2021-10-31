@@ -315,5 +315,58 @@
 
             return $success;
         }
+
+        function getUserById($userId, $includeFollowers = true, $includeFollowing = true)
+        {
+            $user = null;
+           
+            if($this->databaseConnection != null)
+            {
+                $sql = "select *
+                        from users
+                        where userid = ?;";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("i", $userId);
+                
+                $statement->execute();
+
+                $result = $statement->get_result();
+
+                if($result->num_rows == 1)
+                {
+                    $user = $result->fetch_object("User");
+
+                    if($includeFollowers)
+                    {
+                        $user->followers = $this->getUserFollowers($user->userid);
+                    }
+
+                    if($includeFollowing)
+                    {
+                        $user->following = $this->getUserFollowing($user->userid);
+                    }
+                }
+            }
+
+            return $user;
+        }
+
+        //Returns a user without sensitive information.
+        function getProfileById($userId)
+        {
+            $profile = null;
+            $user = $this->getUserById($userId);
+
+            if($user != null)
+            {
+                unset($user->password);
+                unset($user->email);
+
+                $profile = $user;
+            }
+
+            return $profile;
+        }
     }
 ?>
