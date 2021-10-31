@@ -368,5 +368,45 @@
 
             return $profile;
         }
+
+        //Returns profiles whose usernames or first and last names match the parameter name.
+        function getProfilesByName($name, $includeFollowers = true, $includeFollowing = true)
+        {
+            $profiles = null;
+            $sql = "select userid, username, firstlastname, joined, verified, original
+                    from users
+                    where username like ? or firstlastname like ?;";
+
+            $statement = $this->databaseConnection->prepare($sql);
+
+            $param = "{$name}%";
+            $statement->bind_param("ss", $param, $param);
+            
+            if($statement->execute())
+            {
+                $profiles = [];
+                $result = $statement->get_result();
+                
+                while($user = $result->fetch_object("User"))
+                {
+                    if($includeFollowers)
+                    {
+                        $user->followers = $this->getUserFollowers($user->userid);
+                    }
+
+                    if($includeFollowing)
+                    {
+                        $user->following = $this->getUserFollowing($user->userid);
+                    }
+
+                    unset($user->password);
+                    unset($user->email);
+
+                    $profiles[] = $user;
+                }
+            }
+
+            return $profiles;
+        }
     }
 ?>
