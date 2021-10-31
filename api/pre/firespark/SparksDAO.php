@@ -44,7 +44,7 @@
             {
                 $sql = "select sparkid, userid, body, created, deleted, username, firstlastname
                         from sparks natural join users
-                        where sparkid = ? and deleted = 0;";
+                        where sparkid = ? and deleted = FALSE;";
             }
 
             $statement = $this->databaseConnection->prepare($sql);
@@ -243,6 +243,45 @@
                 $sparks = [];
                 $result = $statement->get_result();
 
+                while($spark = $result->fetch_object("Spark"))
+                {
+                    $spark->likes = $this->getSparkLikes($spark->sparkid);
+                    $spark->comments = $this->getSparkComments($spark->sparkid);
+                    $sparks[] = $spark;
+                }
+            }
+
+            return $sparks;
+        }
+
+        //Returns all the sparks belonging to a certain user.
+        function getSparksByUserId($userId, $includeDeleted = false)
+        {
+            $sparks = null;
+            $sql = null;
+
+            if($includeDeleted)
+            {
+                $sql = "select sparkid, userid, body, created, deleted, username, firstlastname
+                        from sparks natural join users
+                        where userid = ?;";
+            }
+            else
+            {
+                $sql = "select sparkid, userid, body, created, deleted, username, firstlastname
+                        from sparks natural join users
+                        where userid = ? and deleted = FALSE;";
+            }
+
+            $statement = $this->databaseConnection->prepare($sql);
+
+            $statement->bind_param("i", $userId);
+            
+            if($statement->execute())
+            {
+                $sparks = [];
+                $result = $statement->get_result();
+                
                 while($spark = $result->fetch_object("Spark"))
                 {
                     $spark->likes = $this->getSparkLikes($spark->sparkid);
