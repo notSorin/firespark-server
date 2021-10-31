@@ -352,28 +352,11 @@
             return $user;
         }
 
-        //Returns a user without sensitive information.
-        function getProfileById($userId)
-        {
-            $profile = null;
-            $user = $this->getUserById($userId);
-
-            if($user != null)
-            {
-                unset($user->password);
-                unset($user->email);
-
-                $profile = $user;
-            }
-
-            return $profile;
-        }
-
         //Returns profiles whose usernames or first and last names match the parameter name.
-        function getProfilesByName($name, $includeFollowers = true, $includeFollowing = true)
+        function getUsersByName($name, $includeFollowers = true, $includeFollowing = true)
         {
             $profiles = null;
-            $sql = "select userid, username, firstlastname, joined, verified, original
+            $sql = "select *
                     from users
                     where username like ? or firstlastname like ?;";
 
@@ -398,9 +381,6 @@
                     {
                         $user->following = $this->getUserFollowing($user->userid);
                     }
-
-                    unset($user->password);
-                    unset($user->email);
 
                     $profiles[] = $user;
                 }

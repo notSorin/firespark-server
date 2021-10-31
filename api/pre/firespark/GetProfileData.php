@@ -17,14 +17,18 @@
         function getProfileData($userId)
         {
             $ret = null;
-            $profile = $this->usersDAO->getProfileById($userId);
-            $profileSparks = $this->sparksDAO->getSparksByUserId($userId);
+            $user = $this->usersDAO->getUserById($userId);
+            $userSparks = $this->sparksDAO->getSparksByUserId($userId);
             
-            if($profile != null && $profileSparks != null)
+            if($user != null && $userSparks != null)
             {
+                //Remove sensitive information from the user.
+                unset($user->password);
+                unset($user->email);
+
                 $ret = array(
-                    KEY_PROFILE => $profile,
-                    KEY_PROFILE_SPARKS => $profileSparks
+                    KEY_PROFILE => $user,
+                    KEY_PROFILE_SPARKS => $userSparks
                 );
             }
 
