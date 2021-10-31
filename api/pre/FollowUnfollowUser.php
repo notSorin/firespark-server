@@ -16,7 +16,7 @@
             $token = $headers[KEY_TOKEN_AUTH];
             $tokenPayload = decodeToken($token);
 
-            if($tokenPayload != null)
+            if($tokenPayload !== null)
             {
                 $userid = $tokenPayload->userdata->userid;
                 $followeeid = $_POST[KEY_FOLLOWEE_ID];

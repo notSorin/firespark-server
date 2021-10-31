@@ -20,7 +20,7 @@
             $user = $this->usersDAO->getUserById($userId);
             $userSparks = $this->sparksDAO->getSparksByUserId($userId);
             
-            if($user != null && $userSparks != null)
+            if($user !== null && $userSparks !== null)
             {
                 //Remove sensitive information from the user.
                 unset($user->password);

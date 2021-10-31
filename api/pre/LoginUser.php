@@ -18,7 +18,7 @@
             $password = $_POST[KEY_PASSWORD];
             $userData = $loginUser->loginUser($emailOrUsername, $password);
 
-            if($userData != null)
+            if($userData !== null)
             {
                 $iat = time();
                 $nbf = $iat;

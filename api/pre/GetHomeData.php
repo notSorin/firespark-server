@@ -16,12 +16,12 @@
             $token = $headers[KEY_TOKEN_AUTH];
             $tokenPayload = decodeToken($token);
 
-            if($tokenPayload != null)
+            if($tokenPayload !== null)
             {
                 $userid = $tokenPayload->userdata->userid;
                 $homeData = $ghd->getHomeData($userid);
                 
-                if($homeData != null)
+                if($homeData !== null)
                 {
                     $response = createSuccessResponse($homeData);
                 }

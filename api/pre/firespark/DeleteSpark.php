@@ -16,7 +16,7 @@
             $success = false;
             $spark = $this->sparksDAO->getSparkById($sparkId);
             
-            if($spark != null)
+            if($spark !== null)
             {
                 //Make sure the user who wants to delete the spark is its owner.
                 if($spark->userid == $userId)

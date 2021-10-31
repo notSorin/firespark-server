@@ -16,7 +16,7 @@
             $token = $headers[KEY_TOKEN_AUTH];
             $tokenPayload = decodeToken($token);
 
-            if($tokenPayload != null)
+            if($tokenPayload !== null)
             {
                 $userid = $tokenPayload->userdata->userid;
 
@@ -25,11 +25,11 @@
 
                 $sparkBody = $sendSpark->preProcessSparkBody($_POST[KEY_SPARK_BODY]);
 
-                if($sparkBody != null)
+                if($sparkBody !== null)
                 {
                     $spark = $sendSpark->sendSpark($userid, $sparkBody);
 
-                    if($spark != null)
+                    if($spark !== null)
                     {
                         $response = createSuccessResponse($spark);
                     }

@@ -16,7 +16,7 @@
             $token = $headers[KEY_TOKEN_AUTH];
             $tokenPayload = decodeToken($token);
 
-            if($tokenPayload != null)
+            if($tokenPayload !== null)
             {
                 $userid = $tokenPayload->userdata->userid;
                 $sparkid = $_POST[KEY_SPARK_ID];

@@ -71,7 +71,7 @@
         {
             $comments = [];
            
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $sql = "select userid
                         from comments
@@ -99,7 +99,7 @@
         {
             $likes = [];
            
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $sql = "select userid
                         from sparkslikes
@@ -126,7 +126,7 @@
         {
             $success = false;
 
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $sql = "update sparks
                         set deleted = TRUE
@@ -148,7 +148,7 @@
         {
             $isLiked = false;
 
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $sql = "select *
                         from sparkslikes
@@ -171,7 +171,7 @@
         {
             $success = false;
 
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 //Consider success if the spark is already liked by the user.
                 $success = $this->isSparkLikedByUser($sparkId, $userId);
@@ -198,7 +198,7 @@
         {
             $success = false;
 
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 //Consider success if the spark is already unliked by the user.
                 $success = !$this->isSparkLikedByUser($sparkId, $userId);

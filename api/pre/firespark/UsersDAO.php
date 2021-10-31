@@ -14,7 +14,7 @@
         {
             $user = null;
            
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $sql = "select *
                         from users
@@ -50,7 +50,7 @@
         {
             $followers = [];
            
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $sql = "select userid
                         from followers
@@ -76,7 +76,7 @@
         {
             $following = [];
            
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $sql = "select followeeid
                         from followers
@@ -102,7 +102,7 @@
         {
             $user = null;
            
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $sql = "select *
                         from users
@@ -138,7 +138,7 @@
         {
             $user = null;
            
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $tmpUser = $this->getUserByEmail($email, $includeFollowers, $includeFollowing);
 
@@ -156,7 +156,7 @@
         {
             $user = null;
 
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $tmpUser = $this->getUserByUsername($username, $includeFollowers, $includeFollowing);
 
@@ -173,7 +173,7 @@
         {
             $success = false;
 
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $sql = "insert into users (email, password, username, firstlastname)
                         values (?, ?, ?, ?);";
@@ -192,7 +192,7 @@
         {
             $isUsed = false;
 
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $sql = "select *
                         from users
@@ -214,7 +214,7 @@
         {
             $isUsed = false;
 
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $sql = "select *
                         from users
@@ -240,7 +240,7 @@
 
             if($followeeid != $userid) //A user cannot follow themselves.
             {
-                if($this->databaseConnection != null)
+                if($this->databaseConnection !== null)
                 {
                     $sql = "select *
                             from followers
@@ -320,7 +320,7 @@
         {
             $user = null;
            
-            if($this->databaseConnection != null)
+            if($this->databaseConnection !== null)
             {
                 $sql = "select *
                         from users

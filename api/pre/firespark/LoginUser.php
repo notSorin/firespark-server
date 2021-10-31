@@ -27,7 +27,7 @@
 
             $ret = null;
 
-            if($user != null)
+            if($user !== null)
             {
                 $ret = array(
                     KEY_USER_ID => $user->userid

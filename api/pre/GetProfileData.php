@@ -16,12 +16,12 @@
             $token = $headers[KEY_TOKEN_AUTH];
             $tokenPayload = decodeToken($token);
 
-            if($tokenPayload != null)
+            if($tokenPayload !== null)
             {
                 $pequestedProfileId = $_POST[KEY_USER_ID];
                 $profileData = $gpd->getProfileData($pequestedProfileId);
                 
-                if($profileData != null)
+                if($profileData !== null)
                 {
                     $response = createSuccessResponse($profileData);
                 }
