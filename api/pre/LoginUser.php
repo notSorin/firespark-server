@@ -35,7 +35,7 @@
 
                 $token = JWT::encode($tokenPayload, TOKEN_KEY, HS512);
 
-                $response = createSuccessResponse($token);
+                $response = createSuccessResponse(array(KEY_TOKEN => $token, KEY_USER_ID => $userData[KEY_USER_ID]));
             }
             else
             {

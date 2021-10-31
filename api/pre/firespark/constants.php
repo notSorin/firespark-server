@@ -62,6 +62,7 @@
     define("KEY_TOKEN_USER_DATA", "userdata");
     define("KEY_PROFILE", "profile");
     define("KEY_PROFILE_SPARKS", "profile_sparks");
+    define("KEY_TOKEN", "token");
 
     define("MAX_SPARK_BODY_LENGTH", 150);
 ?>
