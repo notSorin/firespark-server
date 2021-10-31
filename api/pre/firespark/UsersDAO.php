@@ -160,9 +160,12 @@
             {
                 $tmpUser = $this->getUserByUsername($username, $includeFollowers, $includeFollowing);
 
-                if(password_verify($password, $tmpUser->password))
+                if($tmpUser !== null)
                 {
-                    $user = $tmpUser;
+                    if(password_verify($password, $tmpUser->password))
+                    {
+                        $user = $tmpUser;
+                    }
                 }
             }
 
