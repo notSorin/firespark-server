@@ -67,15 +67,25 @@
         }
 
         //Returns an array with the ids of all the users who have commented on a certain spark.
-        function getSparkComments($sparkId)
+        function getSparkComments($sparkId, $includeDeleted = false)
         {
             $comments = [];
            
             if($this->databaseConnection !== null)
             {
-                $sql = "select userid
-                        from comments
-                        where sparkid = ?;";
+                if($includeDeleted)
+                {
+                    $sql = "select userid
+                            from comments
+                            where sparkid = ?;";
+                }
+                else
+                {
+                    $sql = "select userid
+                            from comments
+                            where sparkid = ? and deleted = FALSE;";
+                }
+
                 $statement = $this->databaseConnection->prepare($sql);
 
                 $statement->bind_param("i", $sparkId);
