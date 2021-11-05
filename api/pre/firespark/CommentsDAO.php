@@ -98,5 +98,63 @@
 
             return $likes;
         }
+
+        function getCommentById($commentId, $includeDeleted = false)
+        {
+            $comment = null;
+            $sql = null;
+
+            if($includeDeleted)
+            {
+                $sql = "select commentid, userid, body, created, deleted, replytoid, username, firstlastname
+                        from comments natural join users
+                        where commentid = ?;";
+            }
+            else
+            {
+                $sql = "select commentid, userid, body, created, deleted, replytoid, username, firstlastname
+                        from comments natural join users
+                        where commentid = ? and deleted = FALSE;";
+            }
+
+            $statement = $this->databaseConnection->prepare($sql);
+
+            $statement->bind_param("i", $commentId);
+            
+            if($statement->execute())
+            {
+                $result = $statement->get_result();
+
+                if($result->num_rows == 1)
+                {
+                    $comment = $result->fetch_object("Comment");
+                    $comment->likes = $this->getCommentLikes($comment->commentid);
+                }
+            }
+
+            return $comment;
+        }
+
+        function deleteCommentById($commentId)
+        {
+            $success = false;
+
+            if($this->databaseConnection !== null)
+            {
+                $sql = "update comments
+                        set deleted = TRUE
+                        where commentid = ?;";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("i", $commentId);
+                
+                if($statement->execute())
+                {
+                    $success = $statement->affected_rows == 1;
+                }
+            }
+
+            return $success;
+        }
     }
 ?>
