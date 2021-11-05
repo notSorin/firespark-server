@@ -13,7 +13,7 @@
         
         function searchProfiles($name)
         {
-            $users = $this->usersDAO->getUsersByName($name);
+            $users = $this->usersDAO->getUsersByName($name, false, false);
 
             if($users !== null)
             {
