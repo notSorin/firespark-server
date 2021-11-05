@@ -45,6 +45,7 @@
     define("ERR_GET_HOME_DATA", "Could not retrieve home data.");
     define("ERR_GET_PROFILE_DATA", "Could not retrieve profile data.");
     define("ERR_SEARCH_NAMES", "Could not search for profiles.");
+    define("ERR_GET_SPARK_COMMENTS", "Could not retrieve spark comments.");
 
     define("SUCCESS_CREATE_USER", "User has been successfully registered.");
     define("SUCCESS_DELETE_SPARK", "The Spark has been deleted.");
@@ -63,6 +64,8 @@
     define("KEY_PROFILE", "profile");
     define("KEY_PROFILE_SPARKS", "profile_sparks");
     define("KEY_TOKEN", "token");
+    define("KEY_SPARK", "spark");
+    define("KEY_SPARK_COMMENTS", "spark_comments");
 
     define("MAX_SPARK_BODY_LENGTH", 150);
 ?>
