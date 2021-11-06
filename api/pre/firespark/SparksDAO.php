@@ -154,6 +154,28 @@
             return $success;
         }
 
+        function deleteSparkByIdAndUserId($sparkId, $userId)
+        {
+            $success = false;
+
+            if($this->databaseConnection !== null)
+            {
+                $sql = "update sparks
+                        set deleted = TRUE
+                        where sparkid = ? and userid = ?;";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("ii", $sparkId, $userId);
+                
+                if($statement->execute())
+                {
+                    $success = $statement->affected_rows == 1;
+                }
+            }
+
+            return $success;
+        }
+
         function isSparkLikedByUser($sparkId, $userId)
         {
             $isLiked = false;
