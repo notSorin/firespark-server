@@ -178,5 +178,82 @@
 
             return $success;
         }
+
+        function likeComment($commentId, $userId)
+        {
+            $success = false;
+
+            if($this->databaseConnection !== null)
+            {
+                //Consider success if the comment is already liked by the user.
+                $success = $this->isCommentLikedByUser($commentId, $userId);
+
+                if(!$success)
+                {
+                    $sql = "insert into commentslikes (commentid, userid)
+                            values (?, ?);";
+                    $statement = $this->databaseConnection->prepare($sql);
+
+                    $statement->bind_param("ii", $commentId, $userId);
+
+                    if($statement->execute())
+                    {
+                        $success = $statement->affected_rows == 1;
+                    }
+                }
+            }
+
+            return $success;
+        }
+
+        function unlikeComment($commentId, $userId)
+        {
+            $success = false;
+
+            if($this->databaseConnection !== null)
+            {
+                //Consider success if the comment is already unliked by the user.
+                $success = !$this->isCommentLikedByUser($commentId, $userId);
+
+                if(!$success)
+                {
+                    $sql = "delete from commentslikes
+                            where commentid = ? and userid = ?;";
+                    $statement = $this->databaseConnection->prepare($sql);
+
+                    $statement->bind_param("ii", $commentId, $userId);
+
+                    if($statement->execute())
+                    {
+                        $success = $statement->affected_rows == 1;
+                    }
+                }
+            }
+
+            return $success;
+        }
+
+        function isCommentLikedByUser($commentId, $userId)
+        {
+            $isLiked = false;
+
+            if($this->databaseConnection !== null)
+            {
+                $sql = "select *
+                        from commentslikes
+                        where commentid = ? and userid = ?;";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("ii", $commentId, $userId);
+                
+                if($statement->execute())
+                {
+                    $result = $statement->get_result();
+                    $isLiked = $result->num_rows == 1;
+                }
+            }
+
+            return $isLiked;
+        }
     }
 ?>
