@@ -63,6 +63,8 @@
     define("ERR_GET_SPARK_COMMENTS", "Could not retrieve spark comments.");
     define("ERR_DELETE_COMMENT", "Could not delete comment.");
     define("ERR_LOGIN_FAILURE", "Incorrect email or password.");
+    define("ERR_LIKE_COMMENT", "The Comment could not be liked.");
+    define("ERR_UNLIKE_COMMENT", "The Comment could not be unliked.");
 
     //Error codes.
     define("ERRNO_INVALID_CREDENTIALS", "ERRNO_IC");
@@ -75,4 +77,6 @@
     define("SUCCESS_FOLLOW_USER", "The User has been followed.");
     define("SUCCESS_UNFOLLOW_USER", "The User has been unfollowed.");
     define("SUCCESS_DELETE_COMMENT", "The Comment has been deleted.");
+    define("SUCCESS_LIKE_COMMENT", "The Comment has been liked.");
+    define("SUCCESS_UNLIKE_COMMENT", "The Comment has been unliked.");
 ?>
