@@ -13,19 +13,8 @@
         
         function deleteComment($userId, $commentId)
         {
-            $success = false;
-            $comment = $this->commentsDAO->getCommentById($commentId);
-            
-            if($comment !== null)
-            {
-                //Make sure the user who wants to delete the comment is its owner.
-                if($comment->userid == $userId)
-                {
-                    $success = $this->commentsDAO->deleteCommentById($commentId);
-                }
-            }
-
-            return $success;
+            //Call deleteCommentByIdAndUserId() to make sure the user who wants to delete the comment is its owner.
+            return $this->commentsDAO->deleteCommentByIdAndUserId($commentId, $userId);
         }
 
         function containsRequiredKeysAndHeaders($keysArray, $headers)

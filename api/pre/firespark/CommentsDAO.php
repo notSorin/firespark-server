@@ -156,5 +156,27 @@
 
             return $success;
         }
+
+        function deleteCommentByIdAndUserId($commentId, $userId)
+        {
+            $success = false;
+
+            if($this->databaseConnection !== null)
+            {
+                $sql = "update comments
+                        set deleted = TRUE
+                        where commentid = ? and userid = ?;";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("ii", $commentId, $userId);
+                
+                if($statement->execute())
+                {
+                    $success = $statement->affected_rows == 1;
+                }
+            }
+
+            return $success;
+        }
     }
 ?>
