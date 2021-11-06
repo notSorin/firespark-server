@@ -13,7 +13,7 @@
         
         function deleteSpark($userId, $sparkId)
         {
-            //Call deleteSparkByIdAndUserId() to make sure the user who wants to delete the spark is its owner.    
+            //Call deleteSparkByIdAndUserId() to make sure the user who wants to delete the spark is its owner.
             return $this->sparksDAO->deleteSparkByIdAndUserId($sparkId, $userId);
         }
 
