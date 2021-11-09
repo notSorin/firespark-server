@@ -99,7 +99,7 @@
             return $likes;
         }
 
-        function getCommentById($commentId, $includeDeleted = false)
+        function getCommentById($commentId, $includeDeleted = false, $includeReplyData = false)
         {
             $comment = null;
 
@@ -109,13 +109,13 @@
 
                 if($includeDeleted)
                 {
-                    $sql = "select commentid, userid, body, created, deleted, replytoid, username, firstlastname
+                    $sql = "select commentid, sparkid, userid, body, created, deleted, replytoid, username, firstlastname
                             from comments natural join users
                             where commentid = ?;";
                 }
                 else
                 {
-                    $sql = "select commentid, userid, body, created, deleted, replytoid, username, firstlastname
+                    $sql = "select commentid, sparkid, userid, body, created, deleted, replytoid, username, firstlastname
                             from comments natural join users
                             where commentid = ? and deleted = FALSE;";
                 }
@@ -132,6 +132,17 @@
                     {
                         $comment = $result->fetch_object("Comment");
                         $comment->likes = $this->getCommentLikes($comment->commentid);
+
+                        if($includeReplyData && $comment->replytoid !== null)
+                        {
+                            $replyComment = $this->getCommentById($comment->replytoid, false, false);
+
+                            if($replyComment !== null)
+                            {
+                                $comment->replytousername = $replyComment->username;
+                                $comment->replytofirstlastname = $replyComment->firstlastname;
+                            }
+                        }
                     }
                 }
             }
@@ -276,7 +287,7 @@
                 {
                     $commentId = $this->databaseConnection->insert_id;
                     
-                    $comment = $this->getCommentById($commentId);
+                    $comment = $this->getCommentById($commentId, false, true);
                 }
             }
 
