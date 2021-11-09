@@ -6,6 +6,7 @@
     define("TOKEN_KEY", "Make*Sure-This)Is}A%VERY+Strong#Password!OR.bad.things/will:happen");
     define("THIRTY_DAYS", 2592000); //In seconds.
     define("MAX_SPARK_BODY_LENGTH", 150);
+    define("MAX_COMMENT_BODY_LENGTH", 150);
 
     //Database strings.
     define("DB_NAME", "firespark");
@@ -40,6 +41,8 @@
     define("KEY_SPARK", "spark");
     define("KEY_SPARK_COMMENTS", "spark_comments");
     define("KEY_COMMENT_ID", "commentid");
+    define("KEY_COMMENT_BODY", "body");
+    define("KEY_COMMENT_REPLYTOID", "replytoid");
 
     //Error strings.
     define("ERR_BAD_REQUEST", "Bad request.");
@@ -65,6 +68,7 @@
     define("ERR_LOGIN_FAILURE", "Incorrect email or password.");
     define("ERR_LIKE_COMMENT", "The Comment could not be liked.");
     define("ERR_UNLIKE_COMMENT", "The Comment could not be unliked.");
+    define("ERR_SEND_COMMENT", "The Comment could not be sent.");
 
     //Error codes.
     define("ERRNO_INVALID_CREDENTIALS", "ERRNO_IC");
