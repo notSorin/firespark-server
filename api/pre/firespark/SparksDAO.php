@@ -13,17 +13,21 @@
         function insertSpark($userId, $sparkBody)
         {
             $spark = null;
-            $sql = "insert into sparks (userid, body)
-                    values (?, ?);";
-            $statement = $this->databaseConnection->prepare($sql);
 
-            $statement->bind_param("is", $userId, $sparkBody);
-
-            if($statement->execute())
+            if($this->databaseConnection !== null)
             {
-                $sparkId = $this->databaseConnection->insert_id;
-                
-                $spark = $this->getSparkById($sparkId, $userId);
+                $sql = "insert into sparks (userid, body)
+                        values (?, ?);";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("is", $userId, $sparkBody);
+
+                if($statement->execute())
+                {
+                    $sparkId = $this->databaseConnection->insert_id;
+                    
+                    $spark = $this->getSparkById($sparkId);
+                }
             }
 
             return $spark;
@@ -32,34 +36,38 @@
         function getSparkById($sparkId, $includeDeleted = false)
         {
             $spark = null;
-            $sql = null;
 
-            if($includeDeleted)
+            if($this->databaseConnection !== null)
             {
-                $sql = "select sparkid, userid, body, created, deleted, username, firstlastname
-                        from sparks natural join users
-                        where sparkid = ?;";
-            }
-            else
-            {
-                $sql = "select sparkid, userid, body, created, deleted, username, firstlastname
-                        from sparks natural join users
-                        where sparkid = ? and deleted = FALSE;";
-            }
+                $sql = null;
 
-            $statement = $this->databaseConnection->prepare($sql);
-
-            $statement->bind_param("i", $sparkId);
-            
-            if($statement->execute())
-            {
-                $result = $statement->get_result();
-
-                if($result->num_rows == 1)
+                if($includeDeleted)
                 {
-                    $spark = $result->fetch_object("Spark");
-                    $spark->likes = $this->getSparkLikes($sparkId);
-                    $spark->comments = $this->getSparkComments($sparkId);
+                    $sql = "select sparkid, userid, body, created, deleted, username, firstlastname
+                            from sparks natural join users
+                            where sparkid = ?;";
+                }
+                else
+                {
+                    $sql = "select sparkid, userid, body, created, deleted, username, firstlastname
+                            from sparks natural join users
+                            where sparkid = ? and deleted = FALSE;";
+                }
+
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("i", $sparkId);
+                
+                if($statement->execute())
+                {
+                    $result = $statement->get_result();
+
+                    if($result->num_rows == 1)
+                    {
+                        $spark = $result->fetch_object("Spark");
+                        $spark->likes = $this->getSparkLikes($sparkId);
+                        $spark->comments = $this->getSparkComments($sparkId);
+                    }
                 }
             }
 
