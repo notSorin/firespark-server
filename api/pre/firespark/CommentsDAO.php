@@ -102,33 +102,37 @@
         function getCommentById($commentId, $includeDeleted = false)
         {
             $comment = null;
-            $sql = null;
 
-            if($includeDeleted)
+            if($this->databaseConnection !== null)
             {
-                $sql = "select commentid, userid, body, created, deleted, replytoid, username, firstlastname
-                        from comments natural join users
-                        where commentid = ?;";
-            }
-            else
-            {
-                $sql = "select commentid, userid, body, created, deleted, replytoid, username, firstlastname
-                        from comments natural join users
-                        where commentid = ? and deleted = FALSE;";
-            }
+                $sql = null;
 
-            $statement = $this->databaseConnection->prepare($sql);
-
-            $statement->bind_param("i", $commentId);
-            
-            if($statement->execute())
-            {
-                $result = $statement->get_result();
-
-                if($result->num_rows == 1)
+                if($includeDeleted)
                 {
-                    $comment = $result->fetch_object("Comment");
-                    $comment->likes = $this->getCommentLikes($comment->commentid);
+                    $sql = "select commentid, userid, body, created, deleted, replytoid, username, firstlastname
+                            from comments natural join users
+                            where commentid = ?;";
+                }
+                else
+                {
+                    $sql = "select commentid, userid, body, created, deleted, replytoid, username, firstlastname
+                            from comments natural join users
+                            where commentid = ? and deleted = FALSE;";
+                }
+
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("i", $commentId);
+                
+                if($statement->execute())
+                {
+                    $result = $statement->get_result();
+
+                    if($result->num_rows == 1)
+                    {
+                        $comment = $result->fetch_object("Comment");
+                        $comment->likes = $this->getCommentLikes($comment->commentid);
+                    }
                 }
             }
 
@@ -254,6 +258,29 @@
             }
 
             return $isLiked;
+        }
+
+        function insertComment($userId, $sparkId, $commentBody, $replyToId)
+        {
+            $comment = null;
+
+            if($this->databaseConnection !== null)
+            {
+                $sql = "insert into comments (sparkid, userid, body, replytoid)
+                        values (?, ?, ?, ?);";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("iisi", $sparkId, $userId, $commentBody, $replyToId);
+
+                if($statement->execute())
+                {
+                    $commentId = $this->databaseConnection->insert_id;
+                    
+                    $comment = $this->getCommentById($commentId);
+                }
+            }
+
+            return $comment;
         }
     }
 ?>
