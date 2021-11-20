@@ -341,5 +341,33 @@
 
             return $sparks;
         }
+
+        //Removes all sparks ids from the popularsparks table, and adds new ones.
+        function updatePopularSparks()
+        {
+            $success = false;
+
+            if($this->databaseConnection !== null)
+            {
+                $deleteSql = "delete from popularsparks;";
+                $insertSql = "insert into popularsparks (sparkid)
+                            select sparks.sparkid
+                            from sparks join sparkslikes on sparks.sparkid = sparkslikes.sparkid
+                            where deleted = FALSE and sparks.created > NOW() - INTERVAL 14 DAY
+                            group by sparks.sparkid
+                            order by count(*) desc, sparks.created asc, sparks.sparkid asc
+                            limit 10;";
+
+                $deleteStatement = $this->databaseConnection->prepare($deleteSql);
+                $insertStatement = $this->databaseConnection->prepare($insertSql);
+                
+                if($deleteStatement !== false && $insertStatement !== false)
+                {
+                    $success = $deleteStatement->execute() && $insertStatement->execute();
+                }
+            }
+
+            return $success;
+        }
     }
 ?>
