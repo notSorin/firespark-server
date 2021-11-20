@@ -369,5 +369,41 @@
 
             return $success;
         }
+
+        function getPopularSparks()
+        {
+            $sparks = null;
+
+            if($this->databaseConnection !== null)
+            {
+                $sql = "select s1.sparkid, s1.userid, s1.body, s1.created, s1.deleted, s1.username, s1.firstlastname, count(*) as likesAmount
+                        from
+                        (
+                            select sparkid, userid, body, created, deleted, username, firstlastname
+                            from popularsparks natural join sparks natural join users
+                            where deleted = FALSE
+                            order by created desc
+                        ) s1
+                        join sparkslikes on s1.sparkid = sparkslikes.sparkid
+                        group by s1.sparkid
+                        order by likesAmount desc, s1.created asc, s1.sparkid asc;";
+                $statement = $this->databaseConnection->prepare($sql);
+                
+                if($statement->execute())
+                {
+                    $sparks = [];
+                    $result = $statement->get_result();
+
+                    while($spark = $result->fetch_object("Spark"))
+                    {
+                        $spark->likes = $this->getSparkLikes($spark->sparkid);
+                        $spark->comments = $this->getSparkComments($spark->sparkid);
+                        $sparks[] = $spark;
+                    }
+                }
+            }
+
+            return $sparks;
+        }
     }
 ?>
