@@ -69,6 +69,7 @@
     define("ERR_LIKE_COMMENT", "The Comment could not be liked.");
     define("ERR_UNLIKE_COMMENT", "The Comment could not be unliked.");
     define("ERR_SEND_COMMENT", "The Comment could not be sent.");
+    define("ERR_GET_POPULAR_SPARKS", "Could not retrieve popular sparks.");
 
     //Error codes.
     define("ERRNO_INVALID_CREDENTIALS", "ERRNO_IC");
