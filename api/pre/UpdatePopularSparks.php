@@ -6,13 +6,16 @@
     require_once('firespark/UpdatePopularSparks.php');
 
     $ups = new UpdatePopularSparks();
+    $logFile = "/var/www/html/api/pre/update.log";
+
+    error_log(date("Y-m-d H:i:s") . " -> ", 3, $logFile);
 
     if($ups->updatePopularSparks())
     {
-        print("The Popular Sparks table has been updated!");
+        error_log("The Popular Sparks table has been updated!\n", 3, $logFile);
     }
     else
     {
-        print("Failed to update the popular Sparks Table.");
+        error_log("Failed to update the popular Sparks Table.\n", 3, $logFile);
     }
 ?>
