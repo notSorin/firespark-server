@@ -3,3 +3,7 @@ old
 api/pre/update.log
 test
 api/vendor
+api/composer.json
+api/composer.lock
+api/composer.phar
+api/installcomposer.sh
