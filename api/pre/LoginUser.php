@@ -1,4 +1,5 @@
 <?php
+    require_once(__DIR__ . '/../../../data/Constants.php');
     require_once('firespark/constants.php');
     require_once('firespark/Utils.php');
     require_once('../vendor/autoload.php');
