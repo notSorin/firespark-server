@@ -1,19 +1,8 @@
 <?php
     //General constants.
-    define("HS512", "HS512");
-    define("TOKEN_ISSUER", "Firespark");
-    define("TOKEN_AUDIENCE", "Firespark users");
-    define("TOKEN_KEY", "Make*Sure-This)Is}A%VERY+Strong#Password!OR.bad.things/will:happen");
     define("THIRTY_DAYS", 2592000); //In seconds.
     define("MAX_SPARK_BODY_LENGTH", 150);
     define("MAX_COMMENT_BODY_LENGTH", 150);
-
-    //Database strings.
-    define("DB_NAME", "firespark");
-    define("DB_NAMEPRE", "firesparkpre");
-    define("DB_HOST", "localhost");
-    define("DB_USER", "fsdbguy");
-    define("DB_PASSWORD", "Kp6SS1W6imawhHKt");
 
     //Keys.
     define("KEY_EMAIL", "email");
