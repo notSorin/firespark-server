@@ -1,6 +1,4 @@
 <?php
-    require_once('constants.php');
-
     class Comment
     {
         public $commentid, $sparkid, $userid, $body, $created, $deleted,
