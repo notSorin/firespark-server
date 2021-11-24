@@ -2,7 +2,5 @@
 API-Server.txt
 SQL-Schema.txt
 old/*
-api/pre/test.php
 api/pre/update.log
-api/pre/emailtest.php
-api/pre/firespark/test.php
+test
