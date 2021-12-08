@@ -312,13 +312,15 @@
                 {
                     $sql = "select sparkid, userid, body, created, deleted, username, firstlastname
                             from sparks natural join users
-                            where userid = ?;";
+                            where userid = ?
+                            order by created desc;";
                 }
                 else
                 {
                     $sql = "select sparkid, userid, body, created, deleted, username, firstlastname
                             from sparks natural join users
-                            where userid = ? and deleted = FALSE;";
+                            where userid = ? and deleted = FALSE
+                            order by created desc;";
                 }
 
                 $statement = $this->databaseConnection->prepare($sql);
