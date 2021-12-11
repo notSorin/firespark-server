@@ -404,5 +404,38 @@
 
             return $users;
         }
+
+        //Returns an array with ALL the users in the network, or an empty array if there are no users,
+        //or null on error.
+        function getAllUsers($includeFollowers = false, $includeFollowing = false)
+        {
+            $users = null;
+            $sql = "select *
+                    from users;";
+            $statement = $this->databaseConnection->prepare($sql);
+            
+            if($statement->execute())
+            {
+                $users = [];
+                $result = $statement->get_result();
+                
+                while($user = $result->fetch_object("User"))
+                {
+                    if($includeFollowers)
+                    {
+                        $user->followers = $this->getUserFollowers($user->userid);
+                    }
+
+                    if($includeFollowing)
+                    {
+                        $user->following = $this->getUserFollowing($user->userid);
+                    }
+
+                    $users[] = $user;
+                }
+            }
+
+            return $users;
+        }
     }
 ?>
