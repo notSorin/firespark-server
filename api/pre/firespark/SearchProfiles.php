@@ -5,6 +5,8 @@
     //This class holds the logic behind searching users in the network.
     class SearchProfiles
     {
+        private $USERNAME_REGEX = "/^[a-zA-Z0-9]{1,20}$/";
+        private $FIRST_LAST_NAME_REGEX = "/^[a-zA-Z0-9 ]{1,30}$/";
         private $usersDAO;
         
         function __construct()
@@ -16,16 +18,21 @@
         //are found, or null on error.
         function searchProfiles($name)
         {
-            //TODO: Check that name matches a username and a first and last name regex before searching.
-            $users = $this->usersDAO->getUsersByName($name, false, false);
+            $users = null;
 
-            if($users !== null)
+            //Check that name matches a username or a first and last name regex before searching.
+            if(preg_match($this->USERNAME_REGEX, $name) || preg_match($this->FIRST_LAST_NAME_REGEX, $name))
             {
-                //Remove sensitive information from the users.
-                foreach($users as &$user)
+                $users = $this->usersDAO->getUsersByName($name, false, false);
+
+                if($users !== null)
                 {
-                    unset($user->password);
-                    unset($user->email);
+                    //Remove sensitive information from the users.
+                    foreach($users as &$user)
+                    {
+                        unset($user->password);
+                        unset($user->email);
+                    }
                 }
             }
 
