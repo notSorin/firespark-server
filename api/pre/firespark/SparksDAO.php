@@ -374,7 +374,7 @@
                 $insertSql = "insert into popularsparks (sparkid)
                             select sparks.sparkid
                             from sparks join sparkslikes on sparks.sparkid = sparkslikes.sparkid
-                            where deleted = FALSE and sparks.created > NOW() - INTERVAL 14 DAY
+                            where deleted = FALSE and sparks.created > NOW() - INTERVAL 7 DAY
                             group by sparks.sparkid
                             order by count(*) desc, sparks.created asc, sparks.sparkid asc
                             limit 10;";
