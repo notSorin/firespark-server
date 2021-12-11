@@ -1,6 +1,7 @@
 <?php
     require_once('UsersDAO.php');
 
+    //This class holds the logic behind registering users into the network.
     class RegisterUser
     {
         private $PASSWORD_REGEX = "/^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W])\S{8,20}$/";
@@ -14,11 +15,16 @@
             $this->usersDAO = new UsersDAO();
         }
 
+        //Returns true if a new entry was successfully created in the database with the given
+        //user information, or false if the entry could not be created because the email is
+        //already in use, or because the username is not available, or because of other errors.
         function registerUser($email, $password, $username, $firstlastname)
         {
             return $this->usersDAO->insertUser($email, $password, $username, $firstlastname);
         }
 
+        //Returns true if a keys array and headers array contain all the required keys for registering
+        //a user into the network.
         function containsRequiredKeys($keysArray)
         {
             return array_key_exists(KEY_EMAIL, $keysArray) && array_key_exists(KEY_PASSWORD, $keysArray) &&

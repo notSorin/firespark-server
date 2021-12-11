@@ -3,6 +3,7 @@
     require_once('constants.php');
     require_once('Spark.php');
 
+    //Data Access Object which contains functions for manipulating Sparks on the database.
     class SparksDAO extends DatabaseOperation
     {
         function __construct()
@@ -10,6 +11,7 @@
             parent::__construct();
         }
 
+        //Inserts a new spark into the network and returns it on success, or null otherwise.
         function insertSpark($userId, $sparkBody)
         {
             $spark = null;
@@ -33,6 +35,8 @@
             return $spark;
         }
 
+        //Returns a spark given its id, or null if the spark does not exist, is deleted, or
+        //other error occurs.
         function getSparkById($sparkId, $includeDeleted = false)
         {
             $spark = null;
@@ -74,10 +78,11 @@
             return $spark;
         }
 
-        //Returns an array with the ids of all the users who have commented on a certain spark.
+        //Returns an array with the ids of all the users who have commented on a certain spark,
+        //or an empty array if the spark does not have any comments, or null on error.
         function getSparkComments($sparkId, $includeDeleted = false)
         {
-            $comments = [];
+            $comments = null;
            
             if($this->databaseConnection !== null)
             {
@@ -100,6 +105,7 @@
                 
                 if($statement->execute())
                 {
+                    $comments = [];
                     $result = $statement->get_result();
 
                     while($row = mysqli_fetch_assoc($result))
@@ -112,10 +118,11 @@
             return $comments;
         }
 
-        //Returns an array with the ids of all the users who have liked a certain spark.
+        //Returns an array with the ids of all the users who have liked a certain spark, an empty
+        //array if no users have liked the spark, or null on error.
         function getSparkLikes($sparkId)
         {
-            $likes = [];
+            $likes = null;
            
             if($this->databaseConnection !== null)
             {
@@ -128,6 +135,7 @@
                 
                 if($statement->execute())
                 {
+                    $likes = [];
                     $result = $statement->get_result();
 
                     while($row = mysqli_fetch_assoc($result))
@@ -140,6 +148,7 @@
             return $likes;
         }
 
+        //Updates a spark's "deleted" field to TRUE. Returns true on success, false otherwise.
         function deleteSparkById($sparkId)
         {
             $success = false;
@@ -162,6 +171,8 @@
             return $success;
         }
 
+        //Updates a spark's "deleted" field to TRUE only if the spark belongs to a certain user.
+        //Returns true on success, false otherwise.
         function deleteSparkByIdAndUserId($sparkId, $userId)
         {
             $success = false;
@@ -184,6 +195,7 @@
             return $success;
         }
 
+        //Returns true if a certain spark is liked by a certain user, false otherwise.
         function isSparkLikedByUser($sparkId, $userId)
         {
             $isLiked = false;
@@ -207,6 +219,8 @@
             return $isLiked;
         }
 
+        //Given a spark id and a user id, adds a new entry into sparkslikes.
+        //Returns true on success, false otherwise.
         function likeSpark($sparkId, $userId)
         {
             $success = false;
@@ -234,6 +248,8 @@
             return $success;
         }
 
+        //Given a spark id and a user id, removes the entry from sparkslikes.
+        //Returns true on success, false otherwise.
         function unlikeSpark($sparkId, $userId)
         {
             $success = false;
@@ -262,7 +278,8 @@
         }
 
         //Returns an array with sparks from the users whom $userId is following (and their own sparks as well,
-        //because it is considered that the user is following themselves), or null on error.
+        //because it is considered that the user is following themselves), or an empty array if the user
+        //does not follow anyone and they do not have any sparks themselves, or null on error.
         function getSparksFromFollowing($userId)
         {
             $sparks = null;
@@ -299,7 +316,8 @@
             return $sparks;
         }
 
-        //Returns all the sparks belonging to a certain user.
+        //Returns an array with all the sparks belonging to a certain user, an empty array
+        //if the user does not have any sparks, or null on error.
         function getSparksByUserId($userId, $includeDeleted = false)
         {
             $sparks = null;
@@ -345,6 +363,7 @@
         }
 
         //Removes all sparks ids from the popularsparks table, and adds new ones.
+        //Returns true on success, false otherwise.
         function updatePopularSparks()
         {
             $success = false;
@@ -372,6 +391,8 @@
             return $success;
         }
 
+        //Returns an array with all the popular sparks on the network at this moment, or an
+        //empty array if there are no popular sparks, or null on error.
         function getPopularSparks()
         {
             $sparks = null;

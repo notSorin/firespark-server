@@ -1,4 +1,6 @@
 <?php
+    //This script is the entry point for network requests related to sending sparks into the network.
+
     require_once('firespark/constants.php');
     require_once('firespark/Utils.php');
 

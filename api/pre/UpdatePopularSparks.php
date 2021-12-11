@@ -1,6 +1,6 @@
 <?php
-    //This file should NOT have read permission for OTHERS, because it should
-    //only be run locally when necessary.
+    //This script is the takes care of updating the popular sparks on the network and logging the output.
+    //It should NOT have read permission for OTHERS, because it should only be run locally when necessary.
 
     require_once('firespark/Utils.php');
     require_once('firespark/UpdatePopularSparks.php');

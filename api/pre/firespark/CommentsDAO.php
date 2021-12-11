@@ -3,6 +3,7 @@
     require_once('constants.php');
     require_once('Comment.php');
 
+    //Data Access Object which contains functions for manipulating Comments on the database.
     class CommentsDAO extends DatabaseOperation
     {
         function __construct()
@@ -10,6 +11,8 @@
             parent::__construct();
         }
 
+        //Returns an array with all the comments for a Spark, or an empty array if the Spark
+        //does not have any Comments, or null on error.
         function getSparkComments($sparkId, $includeDeleted = false)
         {
             $comments = null;
@@ -62,6 +65,7 @@
 
                     while($comment = $result->fetch_object("Comment"))
                     {
+                        //Add the likes to the comment as they are held separately.
                         $comment->likes = $this->getCommentLikes($comment->commentid);
                         $comments[] = $comment;
                     }
@@ -71,10 +75,11 @@
             return $comments;
         }
 
-        //Returns an array with the ids of all the users who have liked a certain comment.
+        //Returns an array with the ids of all the users who have liked a certain comment,
+        //or an empty array if the comment does not have any likes, or null on error.
         function getCommentLikes($commentId)
         {
-            $likes = [];
+            $likes = null;
             
             if($this->databaseConnection !== null)
             {
@@ -87,6 +92,7 @@
                 
                 if($statement->execute())
                 {
+                    $likes = [];
                     $result = $statement->get_result();
 
                     while($row = mysqli_fetch_assoc($result))
@@ -99,6 +105,7 @@
             return $likes;
         }
 
+        //Returns a comment by its id, or null if the comment does not exist or an error occurred.
         function getCommentById($commentId, $includeDeleted = false, $includeReplyData = false)
         {
             $comment = null;
@@ -133,6 +140,7 @@
                         $comment = $result->fetch_object("Comment");
                         $comment->likes = $this->getCommentLikes($comment->commentid);
 
+                        //Also grab the data of the "reply to" comment if this comment is a reply to another.
                         if($includeReplyData && $comment->replytoid !== null)
                         {
                             $replyComment = $this->getCommentById($comment->replytoid, false, false);
@@ -150,6 +158,7 @@
             return $comment;
         }
 
+        //Updates the "deleted" field to TRUE of a comment by its id. Returns true on success, false otherwise.
         function deleteCommentById($commentId)
         {
             $success = false;
@@ -172,6 +181,7 @@
             return $success;
         }
 
+        //Updates the "deleted" field to TRUE of a comment by its id and owner id. Returns true on success, false otherwise.
         function deleteCommentByIdAndUserId($commentId, $userId)
         {
             $success = false;
@@ -194,6 +204,8 @@
             return $success;
         }
 
+        //Like a comment given its id and the id of the user who likes the comment.
+        //Returns true on success, false otherwise.
         function likeComment($commentId, $userId)
         {
             $success = false;
@@ -221,6 +233,8 @@
             return $success;
         }
 
+        //Unlike a comment given its id and the id of the user who unlikes the comment.
+        //Returns true on success, false otherwise.
         function unlikeComment($commentId, $userId)
         {
             $success = false;
@@ -248,6 +262,7 @@
             return $success;
         }
 
+        //Returns true if a comment is liked by a user, false otherwise.
         function isCommentLikedByUser($commentId, $userId)
         {
             $isLiked = false;
@@ -271,7 +286,10 @@
             return $isLiked;
         }
 
-        function insertComment($userId, $sparkId, $commentBody, $replyToId)
+        //Inserts a comment into the database given a user id, a spark id, a comment body and the id of another
+        //comment to reply to (or null if not replying to another comment).
+        //Returns the inserted comment on success, null otherwise.
+        function insertComment($userId, $sparkId, $commentBody, $replyToId = null)
         {
             $comment = null;
 

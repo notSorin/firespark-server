@@ -1,6 +1,7 @@
 <?php
     require_once(__DIR__ . '/../../../../data/Constants.php');
 
+    //This class allows to connect to the network's database.
     class DatabaseConnector
     {
         private $databaseConnection;
@@ -12,6 +13,7 @@
             $this->databaseConnection = $newMySqli->connect_errno ? null : $newMySqli;
         }
 
+        //Returns a MySqli connection to the network's database.
         function getDatabaseConnection()
         {
             return $this->databaseConnection;

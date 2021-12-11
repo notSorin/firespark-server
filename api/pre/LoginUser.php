@@ -1,4 +1,6 @@
 <?php
+    //This script is the entry point for network requests related to logging users into the network.
+
     require_once(__DIR__ . '/../../../data/Constants.php');
     require_once('firespark/constants.php');
     require_once('firespark/Utils.php');

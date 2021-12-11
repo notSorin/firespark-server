@@ -3,6 +3,7 @@
     require_once('constants.php');
     require_once('User.php');
 
+    //Data Access Object which contains functions for manipulating Users on the database.
     class UsersDAO extends DatabaseOperation
     {
         function __construct()
@@ -10,6 +11,7 @@
             parent::__construct();
         }
 
+        //Returns a user by email, or null if the user does not exist.
         function getUserByEmail($email, $includeFollowers = true, $includeFollowing = true)
         {
             $user = null;
@@ -22,7 +24,6 @@
                 $statement = $this->databaseConnection->prepare($sql);
 
                 $statement->bind_param("s", $email);
-                
                 $statement->execute();
 
                 $result = $statement->get_result();
@@ -46,9 +47,11 @@
             return $user;
         }
 
+        //Returns an array with the ids of users who follow a certain user, or an empty
+        //array if no users follow them, or null on error.
         function getUserFollowers($userId)
         {
-            $followers = [];
+            $followers = null;
            
             if($this->databaseConnection !== null)
             {
@@ -58,10 +61,10 @@
                 $statement = $this->databaseConnection->prepare($sql);
 
                 $statement->bind_param("i", $userId);
-                
                 $statement->execute();
 
                 $result = $statement->get_result();
+                $followers = [];
 
                 while($row = mysqli_fetch_assoc($result))
                 {
@@ -72,9 +75,11 @@
             return $followers;
         }
 
+        //Returns an array with the ids of users whom a user is following, or an empty
+        //array if the user does not follow anyone, or null on error.
         function getUserFollowing($userId)
         {
-            $following = [];
+            $following = null;
            
             if($this->databaseConnection !== null)
             {
@@ -84,10 +89,10 @@
                 $statement = $this->databaseConnection->prepare($sql);
 
                 $statement->bind_param("i", $userId);
-                
                 $statement->execute();
 
                 $result = $statement->get_result();
+                $following = [];
 
                 while($row = mysqli_fetch_assoc($result))
                 {
@@ -98,6 +103,7 @@
             return $following;
         }
 
+        //Returns a user by their username, or null if the user does not exist.
         function getUserByUsername($username, $includeFollowers = true, $includeFollowing = true)
         {
             $user = null;
@@ -110,7 +116,6 @@
                 $statement = $this->databaseConnection->prepare($sql);
 
                 $statement->bind_param("s", $username);
-                
                 $statement->execute();
 
                 $result = $statement->get_result();
@@ -134,6 +139,8 @@
             return $user;
         }
 
+        //Returns a user by their email and password, or null if the password does not match the user or if an
+        //error occurs.
         function getUserByEmailAndPassword($email, $password, $includeFollowers = true, $includeFollowing = true)
         {
             $user = null;
@@ -151,7 +158,8 @@
             return $user;
         }
 
-        //Returns a user that matches a certain username (ignoring case) and password, or null on error.
+        //Returns a user by their username (ignoring case) and password, or null if the password does not match
+        //the user or if an error occurs.
         function getUserByUsernameAndPassword($username, $password, $includeFollowers = true, $includeFollowing = true)
         {
             $user = null;
@@ -172,6 +180,7 @@
             return $user;
         }
 
+        //Inserts a new user into the database. Returns true on success, false otherwise.
         function insertUser($email, $password, $username, $firstlastname)
         {
             $success = false;
@@ -191,6 +200,7 @@
             return $success;
         }
 
+        //Returns true if an email is already in use by someone, false otherwise.
         function isEmailUsed($email)
         {
             $isUsed = false;
@@ -203,16 +213,16 @@
                 $statement = $this->databaseConnection->prepare($sql);
 
                 $statement->bind_param("s", $email);
-                
                 $statement->execute();
-                $rowsFound = $statement->get_result()->num_rows;
 
+                $rowsFound = $statement->get_result()->num_rows;
                 $isUsed = $rowsFound != 0;
             }
 
             return $isUsed;
         }
 
+        //Returns true if a username is already in user by someone, false otherwise.
         function isUsernameUsed($username)
         {
             $isUsed = false;
@@ -225,10 +235,9 @@
                 $statement = $this->databaseConnection->prepare($sql);
 
                 $statement->bind_param("s", $username);
-                
                 $statement->execute();
-                $rowsFound = $statement->get_result()->num_rows;
 
+                $rowsFound = $statement->get_result()->num_rows;
                 $isUsed = $rowsFound != 0;
             }
 
@@ -263,6 +272,8 @@
             return $isFollowed;
         }
 
+        //Adds a new entry into the followers table indicating that the user with $userid follows
+        //the user with $followeeid. Returns true on success, false otherwise.
         function followUser($followeeid, $userid)
         {
             $success = false;
@@ -290,6 +301,8 @@
             return $success;
         }
 
+        //Removes the entry from the followers table where the user with $userid follows
+        //the user with $followeeid. Returns true on success, false otherwise.
         function unfollowUser($followeeid, $userid)
         {
             $success = false;
@@ -319,6 +332,7 @@
             return $success;
         }
 
+        //Returns a user by their id, or null if the user does not exist or an error occurs.
         function getUserById($userId, $includeFollowers = true, $includeFollowing = true)
         {
             $user = null;
@@ -330,8 +344,7 @@
                         where userid = ?;";
                 $statement = $this->databaseConnection->prepare($sql);
 
-                $statement->bind_param("i", $userId);
-                
+                $statement->bind_param("i", $userId);   
                 $statement->execute();
 
                 $result = $statement->get_result();
@@ -355,17 +368,17 @@
             return $user;
         }
 
-        //Returns profiles whose usernames or first and last names match the parameter name.
+        //Returns an array of user profiles whose usernames or first and last names match the parameter name,
+        //or an empty array if no users match the given name or if an error occurs.
         function getUsersByName($name, $includeFollowers = true, $includeFollowing = true)
         {
             $users = null;
             $sql = "select *
                     from users
                     where username like ? or firstlastname like ?;";
-
             $statement = $this->databaseConnection->prepare($sql);
-
             $param = "{$name}%";
+
             $statement->bind_param("ss", $param, $param);
             
             if($statement->execute())

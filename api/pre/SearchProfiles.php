@@ -1,4 +1,6 @@
 <?php
+    //This script is the entry point for network requests related to searching for user profiles.
+
     require_once('firespark/constants.php');
     require_once('firespark/Utils.php');
 
