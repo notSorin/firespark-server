@@ -1,6 +1,7 @@
 phpmyadmin
 old
 api/pre/update.log
+api/v1/update.log
 test
 api/vendor
 api/composer.json
