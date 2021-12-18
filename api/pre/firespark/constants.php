@@ -61,6 +61,7 @@
     define("ERR_GET_POPULAR_SPARKS", "Could not retrieve popular sparks.");
     define("ERR_GET_ALL_PROFILES", "Could not retrieve profiles.");
     define("ERR_GET_USER_FOLLOWERS", "Could not retrieve user followers.");
+    define("ERR_GET_USER_FOLLOWING", "Could not retrieve user following.");
 
     //Error codes.
     define("ERRNO_INVALID_CREDENTIALS", "ERRNO_IC");
