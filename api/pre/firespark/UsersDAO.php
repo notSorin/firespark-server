@@ -437,5 +437,75 @@
 
             return $users;
         }
+
+        //Returns an array with the users who follow a certain user, or an empty
+        //array if no users follow them, or null on error.
+        function getUserFollowers($userId)
+        {
+            $followers = null;
+           
+            if($this->databaseConnection !== null)
+            {
+                $sql = "select *
+                        from users
+                        where userid in
+                        (
+                            select userid
+                            from followers
+                            where followeeid = ?
+                        );";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("i", $userId);
+                
+                if($statement->execute())
+                {
+                    $followers = [];
+                    $result = $statement->get_result();
+
+                    while($user = $result->fetch_object("User"))
+                    {
+                        $followers[] = $user;
+                    }
+                }
+            }
+
+            return $followers;
+        }
+
+        //Returns an array with the users whom a user is following, or an empty
+        //array if the user does not follow anyone, or null on error.
+        function getUserFollowing($userId)
+        {
+            $following = null;
+           
+            if($this->databaseConnection !== null)
+            {
+                $sql = "select *
+                        from users
+                        where userid in
+                        (
+                            select followeeid
+                            from followers
+                            where userid = ?
+                        );";
+                $statement = $this->databaseConnection->prepare($sql);
+
+                $statement->bind_param("i", $userId);
+                
+                if($statement->execute())
+                {
+                    $following = [];
+                    $result = $statement->get_result();
+
+                    while($user = $result->fetch_object("User"))
+                    {
+                        $following[] = $user;
+                    }
+                }
+            }
+
+            return $following;
+        }
     }
 ?>
