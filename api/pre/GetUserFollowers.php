@@ -20,7 +20,7 @@
 
             if($tokenPayload !== null)
             {
-                $userId = $tokenPayload->userdata->userid;
+                $userId = $_POST[KEY_USER_ID];
                 $followers = $guf->getUserFollowers($userId);
                 
                 if($followers !== null)

@@ -35,7 +35,7 @@
         //the following of a user.
         function containsRequiredKeysAndHeaders($keysArray, $headers)
         {
-            return array_key_exists(KEY_TOKEN_AUTH, $headers);
+            return array_key_exists(KEY_USER_ID, $keysArray) && array_key_exists(KEY_TOKEN_AUTH, $headers);
         }
     }
 ?>
