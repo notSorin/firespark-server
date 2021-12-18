@@ -34,12 +34,12 @@
 
                     if($includeFollowers)
                     {
-                        $user->followers = $this->getUserFollowers($user->userid);
+                        $user->followers = $this->getUserFollowersIds($user->userid);
                     }
 
                     if($includeFollowing)
                     {
-                        $user->following = $this->getUserFollowing($user->userid);
+                        $user->following = $this->getUserFollowingIds($user->userid);
                     }
                 }
             }
@@ -49,7 +49,7 @@
 
         //Returns an array with the ids of users who follow a certain user, or an empty
         //array if no users follow them, or null on error.
-        function getUserFollowers($userId)
+        function getUserFollowersIds($userId)
         {
             $followers = null;
            
@@ -77,7 +77,7 @@
 
         //Returns an array with the ids of users whom a user is following, or an empty
         //array if the user does not follow anyone, or null on error.
-        function getUserFollowing($userId)
+        function getUserFollowingIds($userId)
         {
             $following = null;
            
@@ -126,12 +126,12 @@
 
                     if($includeFollowers)
                     {
-                        $user->followers = $this->getUserFollowers($user->userid);
+                        $user->followers = $this->getUserFollowersIds($user->userid);
                     }
 
                     if($includeFollowing)
                     {
-                        $user->following = $this->getUserFollowing($user->userid);
+                        $user->following = $this->getUserFollowingIds($user->userid);
                     }
                 }
             }
@@ -355,12 +355,12 @@
 
                     if($includeFollowers)
                     {
-                        $user->followers = $this->getUserFollowers($user->userid);
+                        $user->followers = $this->getUserFollowersIds($user->userid);
                     }
 
                     if($includeFollowing)
                     {
-                        $user->following = $this->getUserFollowing($user->userid);
+                        $user->following = $this->getUserFollowingIds($user->userid);
                     }
                 }
             }
@@ -390,12 +390,12 @@
                 {
                     if($includeFollowers)
                     {
-                        $user->followers = $this->getUserFollowers($user->userid);
+                        $user->followers = $this->getUserFollowersIds($user->userid);
                     }
 
                     if($includeFollowing)
                     {
-                        $user->following = $this->getUserFollowing($user->userid);
+                        $user->following = $this->getUserFollowingIds($user->userid);
                     }
 
                     $users[] = $user;
@@ -423,12 +423,12 @@
                 {
                     if($includeFollowers)
                     {
-                        $user->followers = $this->getUserFollowers($user->userid);
+                        $user->followers = $this->getUserFollowersIds($user->userid);
                     }
 
                     if($includeFollowing)
                     {
-                        $user->following = $this->getUserFollowing($user->userid);
+                        $user->following = $this->getUserFollowingIds($user->userid);
                     }
 
                     $users[] = $user;
