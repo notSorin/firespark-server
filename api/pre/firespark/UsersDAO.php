@@ -465,6 +465,8 @@
 
                     while($user = $result->fetch_object("User"))
                     {
+                        $user->followers = $this->getUserFollowersIds($user->userid);
+                        $user->following = $this->getUserFollowingIds($user->userid);
                         $followers[] = $user;
                     }
                 }
@@ -500,6 +502,8 @@
 
                     while($user = $result->fetch_object("User"))
                     {
+                        $user->followers = $this->getUserFollowersIds($user->userid);
+                        $user->following = $this->getUserFollowingIds($user->userid);
                         $following[] = $user;
                     }
                 }
