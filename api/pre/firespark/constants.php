@@ -60,6 +60,7 @@
     define("ERR_SEND_COMMENT", "The Comment could not be sent.");
     define("ERR_GET_POPULAR_SPARKS", "Could not retrieve popular sparks.");
     define("ERR_GET_ALL_PROFILES", "Could not retrieve profiles.");
+    define("ERR_GET_USER_FOLLOWERS", "Could not retrieve user followers.");
 
     //Error codes.
     define("ERRNO_INVALID_CREDENTIALS", "ERRNO_IC");
